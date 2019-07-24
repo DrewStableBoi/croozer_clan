@@ -1,33 +1,55 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.whole_app {
   display: flex;
   flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100vh;
+  width: 100vw;
 }
 
-.App-link {
-  color: #61dafb;
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-family: Impact, Haettenschweiler, "Franklin Gothic Bold",Charcoal,"Helvetica Inserat","Bitstream Vera Sans Bold","Arial Black","sans serif";
+  font-size: 25px;
+  height: auto;
+  width: 100vw;
+  border-bottom: 3px solid black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login_box {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  font-size: 50px;
+  font-family: Impact, Haettenschweiler, "Franklin Gothic Bold",Charcoal,"Helvetica Inserat","Bitstream Vera Sans Bold","Arial Black","sans serif";
+  align-items: center;
+  text-align: center;
+  justify-content: space-evenly;
+  height: 50%;
+  padding: 10px;
+  margin-bottom: 20vh;
+  width: 25vw;
+}
+
+.login_text {
+  width: 70%;
+  height: 25px;
+  font-size: 15px;
+  text-align: left;
+}
+
+.login_button_wrap{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 25px;
+  align-content: center;
+}
+.login_button{
+font-size: 13px;
+border-radius: 33px;
+outline: none;
 }
