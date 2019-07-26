@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require("express-session");
 const massive = require("massive");
-const bcrypt = require("bcrypt");
 const controller = require("./controllers/controller");
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -12,7 +11,7 @@ app.use(bodyParser.json());
 
 massive({
   host: "localhost",
-  port: 5000,
+  port: 5432,
   database: "drewhemsley",
   user: "drewhemsley",
   password: ""
@@ -20,7 +19,6 @@ massive({
   console.log("PostgreSQL Database Successfully Connected");
 
   app.set("db", db);
-
 });
 
 app.use(
@@ -37,17 +35,8 @@ app.post("/login", controller.login);
 app.get("/logout", controller.logout);
 app.get("/user", controller.getUser);
 app.delete("/user/:id", controller.deleteUser);
-
-app.post("/users/all", (req, res) => {
-  const db = app.get('db');
-  db.query(`SELECT * FROM users WHERE EMAIL='${req.body.email}'`)
-  .then((results) => {
-      res.send(results[0]);
-  }).catch((error) => {
-    res.status(500).send(error)
-  });
-})
-
+app.post("/users/all", controller.getAllUsers);
+app.put("/resetpass", controller.resetPass);
 
 app.listen(8080, function() {
   console.log(`Listening on port:${this.address().port}`);

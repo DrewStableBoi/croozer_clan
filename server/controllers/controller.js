@@ -74,5 +74,45 @@ module.exports = {
       .catch(error => {
         res.status(500).send(error);
       });
+  },
+
+  getAllUsers: (req, res) => {
+    const db = app.get("db");
+    db.query(`SELECT * FROM users WHERE EMAIL='${req.body.email}'`)
+      .then(results => {
+        res.send(results[0]);
+      })
+      .catch(error => {
+        res.status(500).send(error);
+      });
+  },
+
+  resetPass: async (req, res) => {
+    try {
+      const db = req.app.get("db");
+
+      const updatedUser = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        newPass: req.body.newPass
+      };
+
+      const hash = await bcrypt.hash(updatedUser.newPass, 10);
+
+      await db.query(`UPDATE users SET password = '${hash}' WHERE users.first_name = '${
+        updatedUser.first_name
+      }' AND users.last_name = '${updatedUser.last_name}'
+      AND users.email = '${updatedUser.email}'`);
+
+      res.send(
+        `Password for email ${updatedUser.email} has been changed to ${
+          updatedUser.newPass
+        }`
+      );
+      delete updatedUser.newPass;
+    } catch (error) {
+      res.status(500).send(error);
+    }
   }
 };

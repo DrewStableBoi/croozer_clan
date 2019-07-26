@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class Create extends Component {
   constructor() {
@@ -23,15 +24,20 @@ class Create extends Component {
         email: this.state.email,
         password: this.state.password
       };
-      if(body.first_name === "" || body.last_name === "" || body.email === "" || body.password === "") {
-        return alert("Please enter valid credentials")
-      };
+      if (
+        body.first_name === "" ||
+        body.last_name === "" ||
+        body.email === "" ||
+        body.password === ""
+      ) {
+        return alert("Please enter valid credentials");
+      }
       await axios.post("/signup", body);
       this.setState({ created: true });
       alert("Account created successfully!");
-      this.props.history.push("/");
+      this.props.history.push("/firsttime");
     } catch (error) {
-        alert("Error, please try again");
+      alert("Error, please try again");
     }
   };
 
@@ -69,8 +75,17 @@ class Create extends Component {
               this.setState({ password: event.target.value });
             }}
           />
-          <div className="login_buttons">
-            <button onClick={this.create}>Create Account</button>
+          <div className="login_button_wrap">
+            <div className="login_button">
+              <button className="login_button" onClick={this.create}>
+                Create Account
+              </button>
+              <button className="login_button">
+                <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+                  Go Back Home
+                </Link>
+              </button>
+            </div>
           </div>
         </div>
       </div>

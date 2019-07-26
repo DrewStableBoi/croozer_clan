@@ -10,7 +10,7 @@ class Home extends Component {
         loggedIn: true
     };
   }
-
+ 
   logOut = async () => {
     try {
       await axios.get("/logout");

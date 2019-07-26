@@ -38,6 +38,12 @@
   height: 25px;
   font-size: 15px;
   text-align: left;
+  border: none;
+}
+
+.login_text:focus {
+  border-bottom: 2px solid black;
+  outline: none;
 }
 
 .login_button_wrap{
