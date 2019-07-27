@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "../App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 class Create extends Component {
   constructor() {
@@ -45,46 +47,66 @@ class Create extends Component {
     return (
       <div className="whole_app">
         <div className="login_box">
-          <h1>Create Your Account</h1>
-          <input
+          <h1 style={{ fontSize: "40px" }}>Create Your Account</h1>
+          <TextField
             className="login_text"
-            placeholder="First Name"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="First Name"
+            autoFocus
             onChange={event => {
               this.setState({ first_name: event.target.value });
             }}
           />
-          <input
+          <TextField
             className="login_text"
-            placeholder="Last Name"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="Last Name"
+            autoFocus
             onChange={event => {
               this.setState({ last_name: event.target.value });
             }}
           />
-          <input
+          <TextField
             className="login_text"
-            placeholder="Email"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="Email"
+            autoFocus
             onChange={event => {
               this.setState({ email: event.target.value });
             }}
           />
-          <input
+          <TextField
             className="login_text"
-            placeholder="Password"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="Password"
             type="password"
+            autoFocus
             onChange={event => {
               this.setState({ password: event.target.value });
             }}
           />
           <div className="login_button_wrap">
             <div className="login_button">
-              <button className="login_button" onClick={this.create}>
-                Create Account
-              </button>
-              <button className="login_button">
+              <Button variant="standard" color="primary" onClick={this.create}>
+                Create Account{" "}
+              </Button>
+              <Button variant="standard" color="primary">
                 <Link to="/" style={{ textDecoration: "none", color: "black" }}>
                   Go Back Home
                 </Link>
-              </button>
+              </Button>
             </div>
           </div>
         </div>

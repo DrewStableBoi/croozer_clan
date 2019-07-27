@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "../App.css";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 class ForgotPass extends Component {
   constructor() {
@@ -47,46 +49,66 @@ class ForgotPass extends Component {
             {" "}
             Enter Your Information to Reset Your Password
           </h1>
-          <input
+          <TextField
             className="login_text"
-            placeholder="First Name"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="First Name"
+            autoFocus
             onChange={event => {
               this.setState({ first_name: event.target.value });
             }}
           />
-          <input
+          <TextField
             className="login_text"
-            placeholder="Last Name"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="Last Name"
+            autoFocus
             onChange={event => {
               this.setState({ last_name: event.target.value });
             }}
           />
-          <input
+          <TextField
             className="login_text"
-            placeholder="Email"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="Email"
+            autoFocus
             onChange={event => {
               this.setState({ email: event.target.value });
             }}
           />
-          <input
+
+          <TextField
             className="login_text"
-            placeholder="New Password"
+            variant="standard"
+            margin="dense"
+            required
+            fullWidth
+            label="New Password"
             type="password"
+            autoFocus
             onChange={event => {
               this.setState({ newPass: event.target.value });
             }}
           />
           <div className="login_button_wrap">
-            <button className="login_button" onClick={this.reset}>
+            <Button variant="standard" color="primary" onClick={this.reset}>
               Reset Password
-            </button>
-
-            <button className="login_button">
+            </Button>
+            <Button variant="standard" color="primary">
               <Link to="/" style={{ textDecoration: "none", color: "black" }}>
                 Go Back Home
               </Link>
-            </button>
-          </div>
+            </Button>
+          </div> 
         </div>
       </div>
     );
