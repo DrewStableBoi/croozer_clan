@@ -105,6 +105,19 @@ class FirstTime extends Component {
 
   saveAll = () => {};
 
+  logout = async () => {
+    try {
+      await axios.get("/logout");
+      this.setState({ loggedIn: false });
+      alert(`You've successfully been logged out!`);
+      this.props.history.push("/");
+    } catch (error) {
+      alert(
+        "Something went wrong!"
+      );
+    }
+  };
+
   render() {
     return (
       <div className="whole_app" id="first_time">
@@ -180,7 +193,7 @@ class FirstTime extends Component {
           <Button variant="standard" color="primary" onClick={this.saveAll}>
             Create Account
           </Button>
-          <Button variant="standard" color="primary" onClick={this.saveAll}>
+          <Button variant="standard" color="primary" onClick={this.logout}>
             Log Out
           </Button>
           </div>
