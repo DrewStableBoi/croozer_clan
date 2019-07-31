@@ -37,6 +37,11 @@ app.get("/user", controller.getUser);
 app.delete("/user/:id", controller.deleteUser);
 app.post("/users/all", controller.getAllUsers);
 app.put("/resetpass", controller.resetPass);
+app.post("/firsttime", controller.accountCustomized);
+
+app.get("/me", (req, res) => {
+  res.send(req.session.user);
+})
 
 app.listen(8080, function() {
   console.log(`Listening on port:${this.address().port}`);

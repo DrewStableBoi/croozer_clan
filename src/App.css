@@ -1,7 +1,6 @@
 .whole_app {
   display: flex;
-  font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal,
-    "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", "sans serif";
+  font-family: 'Alegreya Sans', sans-serif;
   flex-direction: column;
   text-align: center;
   justify-content: space-between;
@@ -18,8 +17,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal,
-    "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", "sans serif";
   font-size: 25px;
   height: auto;
   width: 100vw;
@@ -33,8 +30,6 @@
   flex-wrap: wrap;
   flex-direction: column;
   font-size: 50px;
-  font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal,
-    "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", "sans serif";
   align-items: center;
   text-align: center;
   justify-content: space-evenly;
@@ -55,14 +50,8 @@
   border: none;
 }
 
-.create_text {
-  width: 45%;
-  height: 25px;
-  font-size: 15px;
-  text-align: left;
-  border: none;
 
-}
+
 
 .login_text:focus {
   border-bottom: 2px solid black;
@@ -95,10 +84,25 @@ a {
   height: 90%;
   width: 70vw;
   margin-left: 10px;
-  text-align: left;
   padding: 16px;
   border: 2px solid black;
   border-radius: 15px;
+}
+
+.create_text {
+  width: 45%;
+  height: 25px;
+  font-size: 15px;
+  border: none;
+  text-align: left;
+}
+
+#firstTime_activities_container {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 .firstTime_info {
