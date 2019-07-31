@@ -27,27 +27,23 @@ module.exports = {
     try {
       const db = req.app.get("db");
       console.log(req.session.user);
-      console.log(      `UPDATE users
+      const account = await db.query(`UPDATE users
       SET "display_name" = '${req.body.displayName}',
-      "birthday" = ${req.body.birthday},
+      "birthday" = '${req.body.birthday}',
       "clan_tag" = '${req.body.clanTag}',
-      activities_first = ARRAY[${req.body.activities_first}],
-      activities_second = ARRAY[${req.body.activities_second}],
-      activities_third = ARRAY[${req.body.activities_third}],
-      times_active = ARRAY[${req.body.preferredTimes}]
-      WHERE email = '${req.session.user.email}'`
-);
-      const account = await db.query(
-      `UPDATE users
-        SET "display_name" = '${req.body.displayName}',
-        "birthday" = ${req.body.birthday},
-        "clan_tag" = '${req.body.clanTag}',
-        activities_first = ${req.body.activities_first},
-        activities_second = ${req.body.activities_second},
-        activities_third = ${req.body.activities_third},
-        times_active = ${req.body.preferredTimes}
-        WHERE email = '${req.session.user.email}'`
-      );
+      activities_first = ARRAY[${req.body.activities_first.map(results => {
+        return `'` + results + `'`;
+      })}],
+      activities_second = ARRAY[${req.body.activities_second.map(results => {
+        return `'` + results + `'`;
+      })}],
+      activities_third = ARRAY[${req.body.activities_third.map(results => {
+        return `'` + results + `'`;
+      })}],
+      times_active = ARRAY[${req.body.preferredTimes.map(results => {
+        return `'` + results + `'`;
+      })}]
+      WHERE email = '${req.session.user.email}'`);
       res.send(account);
     } catch (error) {
       console.log(error);
@@ -63,7 +59,7 @@ module.exports = {
 
       const db = req.app.get("db");
 
-      const [ user ] = await db.users.find({ email });
+      const [user] = await db.users.find({ email });
 
       if (!user)
         return res
