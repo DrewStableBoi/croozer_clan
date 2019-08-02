@@ -37,7 +37,7 @@ class ForgotPass extends Component {
       alert(`Your password has successfully been changed!`);
       this.props.history.push("/");
     } catch (error) {
-      alert("Error, please try again");
+      alert("Error! You may not already have an account created!");
     }
   };
 

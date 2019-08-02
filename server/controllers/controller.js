@@ -22,7 +22,7 @@ module.exports = {
       res.status(500).send(error);
     }
   },
-
+ 
   accountCustomized: async (req, res) => {
     try {
       const db = req.app.get("db");
@@ -52,6 +52,7 @@ module.exports = {
   },
 
   login: async (req, res) => {
+    console.log('hit login, heres body', req.body)
     try {
       const { email, password } = req.body;
       if (!email || !password)
@@ -76,8 +77,8 @@ module.exports = {
       delete user.password;
 
       req.session.user = user;
-
-      return res.send("Successfully logged in!");
+      console.log('here is user', user)
+      return res.status(200).send(user);
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +89,7 @@ module.exports = {
   },
 
   getUser: (req, res) => {
-    if (!req.session.user) return res.status(401).send("Please log in");
+    if (!req.session.user) return res.sendStatus(401);
     return res.send(req.session.user);
   },
 

@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import "../App.css";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
+import Header from "./functional/home_header";
+
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-        loggedIn: true
+        user: props.user
     };
   }
  
@@ -26,9 +29,8 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="whole_app">
-        WHAT'S UP, BITCHES?!
-        <button className="login_button" onClick={this.logOut}>Click here to log out!</button>
+      <div className="whole_app" id="home_container">
+        <Header user={this.state.user}/>
       </div>
     );
   }

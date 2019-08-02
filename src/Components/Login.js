@@ -22,10 +22,15 @@ class Login extends Component {
         email: this.state.email,
         password: this.state.password
       };
-      await axios.post("/login", body);
+      let user = await axios.post("/login", body).then(res => {
+        return res.data;
+      });
+
       this.setState({ login: true });
       alert(`Welcome back, ${this.state.email}!`);
+      this.props.handleSetUser(user);
       this.props.history.push("/home");
+
     } catch (error) {
       alert(
         "Something went wrong. Either the account doesn't exist or you entered in the credentials the wrong way. Try again!"

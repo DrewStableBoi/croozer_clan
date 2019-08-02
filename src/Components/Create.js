@@ -100,7 +100,7 @@ class Create extends Component {
           <div className="login_button_wrap">
             <div className="login_button">
               <Button variant="standard" color="primary" onClick={this.create}>
-                Create Account{" "}
+                Create Account
               </Button>
               <Button variant="standard" color="primary">
                 <Link to="/" style={{ textDecoration: "none", color: "black" }}>

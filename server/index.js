@@ -32,7 +32,7 @@ app.use(
 
 app.post("/signup", controller.signUp);
 app.post("/login", controller.login);
-app.get("/logout", controller.logout);
+app.post("/logout", controller.logout);
 app.get("/user", controller.getUser);
 app.delete("/user/:id", controller.deleteUser);
 app.post("/users/all", controller.getAllUsers);
