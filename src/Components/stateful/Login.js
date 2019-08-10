@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../App.css";
+import "../../App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
@@ -41,17 +41,18 @@ class Login extends Component {
   render() {
     return (
       <div className="whole_app">
+           <div className="background_image"></div>
         <div className="login_box">
           <h1>Croozer Sign In</h1>
           <TextField
             className="login_text"
-            variant="standard"
+            variant="outlined"
             margin="dense"
             required
             fullWidth
             id="email"
             label="Email"
-            name="email"
+            value={this.state.email}
             autoComplete="email"
             autoFocus
             onChange={event => {
@@ -60,14 +61,14 @@ class Login extends Component {
           />
           <TextField
             className="login_text"
-            variant="standard"
+            variant="outlined"
             margin="dense"
             required
             fullWidth
             id="standard-password-input"
             type="password"
             label="Password"
-            name="password"
+            value={this.state.password}
             autoComplete="password"
             autoFocus
             onChange={event => {
@@ -75,14 +76,14 @@ class Login extends Component {
             }}
           />
           <div className="login_button_wrap">
-            <Button variant="standard" color="primary" onClick={this.signIn}>
+            <Button  color="default" onClick={this.signIn}>
               Sign In
             </Button>
-            <Button variant="standard" color="primary">
-              <Link to="/forgot">Forgot Password?</Link>
+            <Button  color="default">
+              <Link style={{color: 'black'}} to="/forgot">Forgot Password?</Link>
             </Button>
-            <Button variant="standard" color="primary" id="login_button">
-              <Link to="/signup">Create New Account</Link>
+            <Button  color="default" id="login_button">
+              <Link style={{color: 'black'}} to="/signup">Create New Account</Link>
             </Button>
           </div>
           <h2

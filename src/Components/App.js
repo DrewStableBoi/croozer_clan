@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import Login from "./Login";
-import Home from "./Home";
-import Create from "./Create";
-import ForgotPassword from "./ForgotPass";
+import Login from "./stateful/Login";
+import Home from "./stateful/Home";
+import Create from "./stateful/Create";
+import ForgotPassword from "./stateful/ForgotPass";
 import axios from "axios";
-import FirstTime from "./FirstTime";
+import FirstTime from "./stateful/FirstTime";
+import materialLogin from "../Components/materialLogin";
 import "typeface-roboto";
 import {
   BrowserRouter as Router,
@@ -34,6 +35,7 @@ class App extends Component {
   };
 
   render() {
+    console.log('this is app js', this.state)
     return (
       <div>
         <Router>
@@ -54,7 +56,10 @@ class App extends Component {
 
             <Route component={Create} path="/signup" />
 
-            <Route component={Home} path="/home" />
+            <Route render={(props) => {
+              const { user } = this.state;
+              return <Home user = {this.state.user} {...props} />
+            }} path="/home" />
 
             {/* <Route
               render={props => {
@@ -92,6 +97,8 @@ class App extends Component {
               exact
               path="/forgot"
             />
+                        <Route component={materialLogin} path="/logintest" />
+
           </Switch>
         </Router>
       </div>

@@ -12,7 +12,8 @@ module.exports = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        password: hash
+        password: hash,
+        friend_list: "yes"
       });
 
       delete newUser.password;
@@ -22,11 +23,10 @@ module.exports = {
       res.status(500).send(error);
     }
   },
- 
+
   accountCustomized: async (req, res) => {
     try {
       const db = req.app.get("db");
-      console.log(req.session.user);
       const account = await db.query(`UPDATE users
       SET "display_name" = '${req.body.displayName}',
       "birthday" = '${req.body.birthday}',
@@ -52,7 +52,7 @@ module.exports = {
   },
 
   login: async (req, res) => {
-    console.log('hit login, heres body', req.body)
+    console.log("hit login, heres body", req.body);
     try {
       const { email, password } = req.body;
       if (!email || !password)
@@ -77,7 +77,7 @@ module.exports = {
       delete user.password;
 
       req.session.user = user;
-      console.log('here is user', user)
+      console.log("here is user", user);
       return res.status(200).send(user);
     } catch (error) {
       console.log(error);
@@ -92,6 +92,43 @@ module.exports = {
     if (!req.session.user) return res.sendStatus(401);
     return res.send(req.session.user);
   },
+
+  Search: (req, res) => {
+    console.log(req.query);
+    const db = req.app.get("db");
+    const { type, name } = req.query; // whatever they typed in
+    const query = `SELECT id, first_name||' '||last_name as full_name, display_name FROM "users" WHERE users."${type}" @> ARRAY['${name}']`;
+    console.log(query);
+
+    db.query(query)
+      .then(users => {
+        res.status(200).send(users);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
+
+
+
+  // addFriend: (req, res) => {
+  //   const db = req.app.get("db");
+  //   const query = `INSERT INTO TABLE users_friend("user_id", "friend_list") VALUES
+  //   "user_id" = ${req.body.user.id},
+  //   "friend_id" = ${req.body.friend_id},
+  //   "user_email" = ${req.body.user.email},
+  //   "friend_email" = ${req.body.friend_email},
+  //   "user_display" = ${req.body.user.displayName},
+  //   "friend_display" = ${req.body.friend_display}
+  //   `;
+  //   db.query(query)
+  //     .then(result => {
+  //       res.status(200).send(result);
+  //     })
+  //     .catch(err => {
+  //       res.status(500).send(err);
+  //     });
+  // },
 
   deleteUser: (req, res) => {
     if (!req.session.user) return res.status(401).send("Please log in");

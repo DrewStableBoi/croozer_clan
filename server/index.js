@@ -38,6 +38,7 @@ app.delete("/user/:id", controller.deleteUser);
 app.post("/users/all", controller.getAllUsers);
 app.put("/resetpass", controller.resetPass);
 app.post("/firsttime", controller.accountCustomized);
+app.get("/search", controller.Search);
 
 app.get("/me", (req, res) => {
   res.send(req.session.user);

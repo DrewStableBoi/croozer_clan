@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../App.css";
+import "../../App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
@@ -44,7 +44,8 @@ class ForgotPass extends Component {
   render() {
     return (
       <div className="whole_app">
-        <div className="login_box">
+        <div className="background_image" style={{backgroundImage: `url('http://getwallpapers.com/wallpaper/full/3/2/8/40823.jpg')`, backgroundSize: 'cover'}}/>
+        <div className="login_box" style={{backgroundColor: '#CACACA', opacity: '.8'}}>
           <h1 style={{ fontSize: "30px" }}>
             {" "}
             Enter Your Information to Reset Your Password
@@ -108,7 +109,7 @@ class ForgotPass extends Component {
                 Go Back Home
               </Link>
             </Button>
-          </div> 
+          </div>
         </div>
       </div>
     );

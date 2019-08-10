@@ -935,6 +935,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@cometchat-pro/chat@^1.8.5":
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/@cometchat-pro/chat/-/chat-1.8.5.tgz#b15cc80f3d8557eb4cb5a04c8e0262fb3b44a498"
+  integrity sha512-My2q942Yd8r6hnPBDytccpHA9DyAfeefWXXWufxbJJ1BQbJ9so2vHIX51NT+JoSZ5rRWM8TvqgxTuqS0O/gGiQ==
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
@@ -1143,6 +1148,13 @@
     prop-types "^15.7.2"
     react-transition-group "^4.0.0"
     warning "^4.0.1"
+
+"@material-ui/icons@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.2.1.tgz#fe2f1c4f60c24256d244a69d86d0c00e8ed4037e"
+  integrity sha512-FvSD5lUBJ66frI4l4AYAPy2CH14Zs2Dgm0o3oOMr33BdQtOAjCgbdOcvPBeaD1w6OQl31uNW3CKOE8xfPNxvUQ==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
 
 "@material-ui/styles@^4.2.0":
   version "4.2.1"
