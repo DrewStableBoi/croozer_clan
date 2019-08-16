@@ -13,13 +13,15 @@ module.exports = {
         last_name: req.body.last_name,
         email: req.body.email,
         password: hash,
-        friend_list: "yes"
+        friend_list: "yes",
+        time_of_signup: `NOW()`
       });
 
       delete newUser.password;
 
       res.send(newUser);
     } catch {
+      console.log(error);
       res.status(500).send(error);
     }
   },
@@ -27,7 +29,7 @@ module.exports = {
   accountCustomized: async (req, res) => {
     try {
       const db = req.app.get("db");
-      const account = await db.query(`UPDATE users
+      const query = `UPDATE users
       SET "display_name" = '${req.body.displayName}',
       "birthday" = '${req.body.birthday}',
       "clan_tag" = '${req.body.clanTag}',
@@ -43,7 +45,12 @@ module.exports = {
       times_active = ARRAY[${req.body.preferredTimes.map(results => {
         return `'` + results + `'`;
       })}]
-      WHERE email = '${req.session.user.email}'`);
+      WHERE email = '${req.session.user.email}'`;
+
+      console.log(query);
+
+      const account = await db.query(query);
+
       res.send(account);
     } catch (error) {
       console.log(error);
@@ -97,9 +104,7 @@ module.exports = {
     console.log(req.query);
     const db = req.app.get("db");
     const { type, name } = req.query; // whatever they typed in
-    const query = `SELECT id, first_name||' '||last_name as full_name, display_name FROM "users" WHERE users."${type}" @> ARRAY['${name}']`;
-    console.log(query);
-
+    const query = `SELECT id, email, display_name, first_name||' '||last_name as full_name, display_name FROM "users" WHERE users."${type}" @> ARRAY['${name}']`;
     db.query(query)
       .then(users => {
         res.status(200).send(users);
@@ -109,26 +114,73 @@ module.exports = {
       });
   },
 
+  sendMessage: (req, res) => {
+    const db = req.app.get("db");
+    const { userMessage, messageSubject, recipientId, senderId } = req.body;
+    const message = `INSERT INTO user_messages("recipient_id", "sender_id", "message_body", "message_subject", "time_of_message") VALUES
+    (
+    ${recipientId},
+    ${senderId},
+    $$${userMessage}$$,
+    $$${messageSubject}$$,
+    NOW() 
+    );`;
+    console.log(message);
+    db.query(message)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
 
+  addFriend: (req, res) => {
+    const db = req.app.get("db");
+    const {
+      user_id,
+      friend_id,
+      user_email,
+      friend_email,
+      user_display,
+      friend_display
+    } = req.body;
+    const query = `INSERT INTO users_friend("user_id", "friend_id", "user_email", "friend_email", "user_display", "friend_display", "request_approved", "time_of_addition") VALUES
+    (
+    ${user_id},
+    ${friend_id},
+    '${user_email}',
+    '${friend_email}',
+    '${user_display}',
+    '${friend_display}',
+    false,
+    NOW()
+    );`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
 
-  // addFriend: (req, res) => {
-  //   const db = req.app.get("db");
-  //   const query = `INSERT INTO TABLE users_friend("user_id", "friend_list") VALUES
-  //   "user_id" = ${req.body.user.id},
-  //   "friend_id" = ${req.body.friend_id},
-  //   "user_email" = ${req.body.user.email},
-  //   "friend_email" = ${req.body.friend_email},
-  //   "user_display" = ${req.body.user.displayName},
-  //   "friend_display" = ${req.body.friend_display}
-  //   `;
-  //   db.query(query)
-  //     .then(result => {
-  //       res.status(200).send(result);
-  //     })
-  //     .catch(err => {
-  //       res.status(500).send(err);
-  //     });
-  // },
+  getMessages: (req, res) => {
+    const db = req.app.get("db");
+    const query = `SELECT u.display_name as sender_name, u.first_name || ' ' || u.last_name as sender_full_name, message_subject, message_body, time_of_message FROM 
+    user_messages um JOIN users u ON u.id = um.sender_id WHERE recipient_id = ${req.query.id}`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
+  },
 
   deleteUser: (req, res) => {
     if (!req.session.user) return res.status(401).send("Please log in");

@@ -35,7 +35,7 @@ class App extends Component {
   };
 
   render() {
-    console.log('this is app js', this.state)
+    console.log("this is app js", this.state);
     return (
       <div>
         <Router>
@@ -56,49 +56,57 @@ class App extends Component {
 
             <Route component={Create} path="/signup" />
 
-            <Route render={(props) => {
-              const { user } = this.state;
-              return <Home user = {this.state.user} {...props} />
-            }} path="/home" />
-
-            {/* <Route
+            <Route
               render={props => {
                 const { user } = this.state;
                 if (user.display_name) {
-                  return <Home user={this.state.user} {...props} />;
+                  return (
+                    <Home 
+                      {...props}
+                      user={this.state.user}
+                      handleSetUser={this.handleSetUser}
+                    />
+                  );
                 } else {
                   return <Redirect to="/firsttime" />;
                 }
               }}
               path="/home"
-            /> */}
+            />
 
-            <Route component={FirstTime} path="/firsttime" />
-
-            {/* <Route
+            <Route
               render={props => {
                 const { user } = this.state;
                 if (!user.display_name && user.email) {
-                  return <FirstTime user={this.state.user} {...props} />;
+                  return (
+                    <FirstTime
+                      {...props}
+                      user={this.state.user}
+                      handleSetUser={this.handleSetUser}
+                    />
+                  );
                 } else {
                   return <Redirect to="/" />;
                 }
               }}
               exact
               path="/firsttime"
-            /> */}
-
-            {/* Commenting out the above Route strategies because I'm working on the component */}
+            />
 
             <Route
               render={props => {
-                return <ForgotPassword {...props} user={this.state.user} />;
+                return (
+                  <ForgotPassword
+                    {...props}
+                    user={this.state.user}
+                    handleSetUser={this.handleSetUser}
+                  />
+                );
               }}
               exact
               path="/forgot"
             />
-                        <Route component={materialLogin} path="/logintest" />
-
+            <Route component={materialLogin} path="/logintest" />
           </Switch>
         </Router>
       </div>

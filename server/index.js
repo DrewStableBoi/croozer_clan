@@ -25,11 +25,11 @@ app.use(
   session({
     secret: "keyboard cat",
     maxAge: 86400000,
-    resave: true,
+    resave: true, 
     saveUninitialized: true
   })
 );
-
+ 
 app.post("/signup", controller.signUp);
 app.post("/login", controller.login);
 app.post("/logout", controller.logout);
@@ -39,6 +39,9 @@ app.post("/users/all", controller.getAllUsers);
 app.put("/resetpass", controller.resetPass);
 app.post("/firsttime", controller.accountCustomized);
 app.get("/search", controller.Search);
+app.post("/sendMessage", controller.sendMessage);
+app.post("/addFriend", controller.addFriend);
+app.get("/getMessages", controller.getMessages)
 
 app.get("/me", (req, res) => {
   res.send(req.session.user);

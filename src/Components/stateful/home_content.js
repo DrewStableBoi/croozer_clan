@@ -1,8 +1,9 @@
 import React from "react";
 import "../../App.css";
 import SearchAdd from "./search_add";
+import MessageCentral from './message_central';
 
-class HomeLeft extends React.Component {
+class HomeContent extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
       this.render();
@@ -11,7 +12,7 @@ class HomeLeft extends React.Component {
 
   render() {
     return (
-      <div className="home_info_container">
+      <div className="home_info_container"> 
         <div>
           {this.props.user.display_name ? (
             <div className="home_info_left_container">
@@ -62,17 +63,16 @@ class HomeLeft extends React.Component {
               </h2>
             </div>
           ) : (
-            <div>Loading...</div>
+            <div>Loading...</div> 
           )}
         </div>
         <div className="home_info_right_containerMain">
           <div className="home_info_right_containerLeft">
             <div className="home_info_right_containerLeft_sub1">
-              <SearchAdd user={this.props.user} />
+              <SearchAdd {...this.props} user={this.props.user} />
             </div>
             <div className="home_info_right_containerLeft_API_content">
-              Message Central Placeholder - This is where messages from the
-              user_messages table will render{" "}
+              <MessageCentral {...this.props} user={this.props.user}/>
             </div>
           </div>
           <div className="home_info_right_containerRight">
@@ -91,4 +91,4 @@ class HomeLeft extends React.Component {
   }
 }
 
-export default HomeLeft;
+export default HomeContent; 
