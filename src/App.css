@@ -1,3 +1,4 @@
+
 .whole_app {
   position: fixed;
   display: flex;
@@ -9,6 +10,7 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
+  background: black;
 }
 
 .background_image {
@@ -53,6 +55,7 @@
   box-shadow: 10px 15px 5px grey;
   border: 4px solid grey;
   border-radius: 15px;
+  background: rgba(255,255,255,0.8)
 }
 
 .login_text {
@@ -103,7 +106,7 @@ a {
 
 .firstTime_create {
   display: flex;
-  background: white;
+  background: rgba(255,255,255,0.8);
   opacity: 0.8;
   flex-direction: column;
   justify-content: space-around;
@@ -188,8 +191,10 @@ a {
   justify-content: space-evenly;
   background-color: #76828c;
   height: 100%;
-  width: auto;
+  width: 20vw;
   padding: 15px;
+  border-right: 4px rgb(12, 12, 12);
+  border-right-style: dashed;
 }
 
 .home_info_left_item {
@@ -217,26 +222,22 @@ a {
   flex-direction: row;
   background-color: #457399;
   height: 100%;
-  width: 100%;
+  width: 80vw;
 }
 
 .home_info_right_containerRight {
   display: flex;
   flex-direction: column;
+  overflow: auto;
   justify-content: space-evenly;
   align-items: center;
   height: 100%;
   width: 60%;
 }
 
-.home_info_right_containerRight_cally {
-  height: 60%;
-  width: 90%;
-  border: 4px solid;
-}
-
 .home_info_right_containerRight_events {
-  height: 20%;
+  display: flex;
+  height: 50%;
   width: 90%;
   border: 4px solid;
 }
@@ -266,6 +267,8 @@ a {
   height: 50%;
   width: 90%;
   border: 3px solid black;
+  background-color: #76828c;
+
 }
 
 .search_container {
@@ -310,6 +313,11 @@ a {
   align-items: flex-start;
   height: 400px;
   width: auto;
+}
+
+.messageTitle {
+  display: flex;
+  justify-content: space-between;
 }
 
 .message {
@@ -369,6 +377,10 @@ a {
 
 .messageCentral_buttons {
   display: flex;
+}
+
+.calendar {
+  height: 100%;
 }
 
 /* The below is for the home nav bar at the top */

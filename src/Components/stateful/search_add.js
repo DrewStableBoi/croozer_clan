@@ -61,9 +61,9 @@ class SearchAdd extends Component {
           console.log(err);
         });
     }
-  }; 
+  };
 
-  addFriend = async (id, email, display) => {
+  addFriend = async (id, email, display, close) => {
     const addFriendBody = {
       user_id: this.props.user.id,
       friend_id: id,
@@ -72,17 +72,22 @@ class SearchAdd extends Component {
       user_display: this.props.user.display_name,
       friend_display: display
     };
-    axios.post("/addFriend", addFriendBody).then((result) => {
-      alert("Your request has been sent, but they must approve it first!");
-      console.log(result);
-    }).catch(err => {
-      alert("Oops! Something went wrong!")
-      console.log(err);
-    });
+    axios
+      .post("/addFriend", addFriendBody)
+      .then(result => {
+        alert("Your request has been sent, but they must approve it first!");
+        console.log(result);
+        this.resetState();
+        close();
+      })
+      .catch(err => {
+        alert("Oops! Something went wrong!");
+        console.log(err);
+      });
     this.props.history.push("/home");
   };
 
-  sendMessage = async (id) => {
+  sendMessage = async (id, close) => {
     const messageObject = {
       messageSubject: this.state.messageSubject,
       userMessage: this.state.userMessage,
@@ -96,6 +101,7 @@ class SearchAdd extends Component {
           this.props.user.display_name
         }! You've just sent your message. They'll get back to you, soon!`
       );
+      close();
       this.props.history.push("/home");
     } catch (error) {
       alert("Something went wrong!");
@@ -113,7 +119,13 @@ class SearchAdd extends Component {
     return (
       <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
         <div className="search_container">
-          <h1 style={{ fontSize: "35px", textDecorationLine: "underline", color: 'white' }}>
+          <h1
+            style={{
+              fontSize: "35px",
+              textDecorationLine: "underline",
+              color: "white"
+            }}
+          >
             Search Users for a Challenge!
           </h1>
           <div className="searchBar_container">
@@ -215,19 +227,28 @@ class SearchAdd extends Component {
                     }
                     position="right center"
                   >
-                    <div>
-                      Are you sure you want to?
-                      <Button
-                        size="small"
-                        color="default"
-                        onClick={() => this.addFriend(person.id, person.email, person.display_name)}
-                      >
-                        Yes
-                      </Button>
-                      <Button size="small" color="default">
-                        No
-                      </Button>
-                    </div>
+                    {close => (
+                      <div>
+                        Are you sure you want to?
+                        <Button
+                          size="small"
+                          color="default"
+                          onClick={() =>
+                            this.addFriend(
+                              person.id,
+                              person.email,
+                              person.display_name,
+                              close
+                            )
+                          }
+                        >
+                          Yes
+                        </Button>
+                        <Button size="small" color="default" onClick={close}>
+                          No
+                        </Button>
+                      </div>
+                    )}
                   </Popup>
                   <Popup
                     trigger={
@@ -238,58 +259,62 @@ class SearchAdd extends Component {
                     position="right center"
                     modal
                   >
-                    <div className="messageContainer">
-                      <h1
-                        style={{
-                          fontSize: "25px",
-                          textDecorationLine: "underline"
-                        }}
-                      >
-                        Send them a Message - Tell them how you FEEL!
-                      </h1>
-                      <h2 style={{ color: "grey" }}>Subject</h2>
-                      <textarea
-                        className="messageSubject"
-                        name="text"
-                        wrap="soft"
-                        required
-                        value={this.state.messageSubject}
-                        onChange={event => {
-                          this.setState({ messageSubject: event.target.value });
-                        }}
-                      >
-                        {" "}
-                      </textarea>
-                      <h2 style={{ color: "grey" }}>Message Body</h2>{" "}
-                      <textarea
-                        className="message"
-                        name="text"
-                        wrap="soft"
-                        required
-                        value={this.state.userMessage}
-                        onChange={event => {
-                          this.setState({ userMessage: event.target.value });
-                        }}
-                      >
-                        {" "}
-                      </textarea>
-                      <div className="messageButtons">
-                        <Button
-                          size="small"
-                          color="default"
-                          onClick={() => this.sendMessage(person.id)}
+                    {close => (
+                      <div className="messageContainer">
+                        <h1
+                          style={{
+                            fontSize: "25px",
+                            textDecorationLine: "underline"
+                          }}
                         >
-                          Send Message
-                        </Button>
-                        <Button
-                          size="small"
-                          color="default"
-                          onClick={this.clearMessage}
+                          Send them a Message - Tell them how you FEEL!
+                        </h1>
+                        <h2 style={{ color: "grey" }}>Subject</h2>
+                        <textarea
+                          className="messageSubject"
+                          name="text"
+                          wrap="soft"
+                          required
+                          value={this.state.messageSubject}
+                          onChange={event => {
+                            this.setState({
+                              messageSubject: event.target.value
+                            });
+                          }}
                         >
-                          Clear Message
-                        </Button>
+                          {" "}
+                        </textarea>
+                        <h2 style={{ color: "grey" }}>Message Body</h2>{" "}
+                        <textarea
+                          className="message"
+                          name="text"
+                          wrap="soft"
+                          required
+                          value={this.state.userMessage}
+                          onChange={event => {
+                            this.setState({ userMessage: event.target.value });
+                          }}
+                        >
+                          {" "}
+                        </textarea>
+                        <div className="messageButtons">
+                          <Button
+                            size="small"
+                            color="default"
+                            onClick={() => this.sendMessage(person.id, close)}
+                          >
+                            Send Message
+                          </Button>
+                          <Button
+                            size="small"
+                            color="default"
+                            onClick={this.clearMessage}
+                          >
+                            Clear Message
+                          </Button>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </Popup>
                 </div>
               );

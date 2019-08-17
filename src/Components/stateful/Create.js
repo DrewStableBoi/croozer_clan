@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import video from "../../video_and_sound_files/street_fighter.mp4"
 
 class Create extends Component {
   constructor() {
@@ -46,8 +47,10 @@ class Create extends Component {
   render() {
     return (
       <div className="whole_app">
-        <div className="background_image" style={{backgroundImage: `url('https://hdwallpaperim.com/wp-content/uploads/2017/08/24/113287-Michael_Jordan-748x421.jpg')`, backgroundSize: 'cover'}}/>
-        <div className="login_box" style={{backgroundColor: '#CACACA', opacity: '.8'}}>
+        <video autoplay="true" muted loop="true" style={{filter: 'blur(6px)', width: '100vw', height: '100%'}}>
+        <source src={video}/>
+        </video>
+        <div className="login_box">
           <h1 style={{ fontSize: "40px" }}>Create Your Account</h1>
           <TextField
             className="login_text"

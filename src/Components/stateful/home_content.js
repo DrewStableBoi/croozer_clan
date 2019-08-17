@@ -1,7 +1,9 @@
 import React from "react";
 import "../../App.css";
 import SearchAdd from "./search_add";
-import MessageCentral from './message_central';
+import MessageCentral from "./message_central";
+import AppCalendar from "./calendar";
+import EventScheduler from "./event_scheduler";
 
 class HomeContent extends React.Component {
   componentDidUpdate(prevProps, prevState) {
@@ -12,7 +14,7 @@ class HomeContent extends React.Component {
 
   render() {
     return (
-      <div className="home_info_container"> 
+      <div className="home_info_container">
         <div>
           {this.props.user.display_name ? (
             <div className="home_info_left_container">
@@ -63,7 +65,7 @@ class HomeContent extends React.Component {
               </h2>
             </div>
           ) : (
-            <div>Loading...</div> 
+            <div>Loading...</div>
           )}
         </div>
         <div className="home_info_right_containerMain">
@@ -72,17 +74,16 @@ class HomeContent extends React.Component {
               <SearchAdd {...this.props} user={this.props.user} />
             </div>
             <div className="home_info_right_containerLeft_API_content">
-              <MessageCentral {...this.props} user={this.props.user}/>
+              <MessageCentral {...this.props} user={this.props.user} />
             </div>
           </div>
           <div className="home_info_right_containerRight">
-            <div className="home_info_right_containerRight_cally">
-              Calendar Placeholder so they can see a calendar component with
-              their events scheduled for competition against others
+            <div>
+              <h1>Blue Days = Scheduled Days</h1>
+              <AppCalendar {...this.props} user={this.props.user} />{" "}
             </div>
             <div className="home_info_right_containerRight_events">
-              Event List Placeholder so they can see a list of their events
-              scheduled for easier access.
+              <EventScheduler {...this.props} user={this.props.user} />
             </div>
           </div>
         </div>
@@ -91,4 +92,4 @@ class HomeContent extends React.Component {
   }
 }
 
-export default HomeContent; 
+export default HomeContent;

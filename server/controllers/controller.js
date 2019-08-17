@@ -169,8 +169,42 @@ module.exports = {
 
   getMessages: (req, res) => {
     const db = req.app.get("db");
-    const query = `SELECT u.display_name as sender_name, u.first_name || ' ' || u.last_name as sender_full_name, message_subject, message_body, time_of_message FROM 
-    user_messages um JOIN users u ON u.id = um.sender_id WHERE recipient_id = ${req.query.id}`;
+    const query = `SELECT u.display_name as sender_name, sender_id, u.first_name || ' ' || u.last_name as sender_full_name, message_subject, message_body, message_id, time_of_message FROM 
+    user_messages um JOIN users u ON u.id = um.sender_id WHERE recipient_id = ${
+      req.query.id
+    }`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
+  },
+
+  getEvents: (req, res) => {
+    const db = req.app.get("db");
+    const query = `SELECT u.display_name as sender_name, ue.event_id, ue.challenger_id, ue.accepter_id, u.first_name || ' ' || u.last_name as challenger_full_name, ue.event_description, ue.time_of_event, ue.event_finished FROM 
+    user_events ue JOIN users u ON u.id = ue.challenger_id WHERE accepter_id = ${
+      req.query.id
+    }`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
+  },
+
+  deleteMessage: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `DELETE FROM user_messages WHERE message_id = ${id}`;
     console.log(query);
     db.query(query)
       .then(result => {

@@ -42,6 +42,8 @@ app.get("/search", controller.Search);
 app.post("/sendMessage", controller.sendMessage);
 app.post("/addFriend", controller.addFriend);
 app.get("/getMessages", controller.getMessages)
+app.delete("/message/:id", controller.deleteMessage);
+app.get("/getEvents", controller.getEvents)
 
 app.get("/me", (req, res) => {
   res.send(req.session.user);

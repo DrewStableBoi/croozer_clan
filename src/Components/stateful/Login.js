@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import video from "../../video_and_sound_files/croozer_rap.mp4"
 
 class Login extends Component {
   constructor() {
@@ -30,7 +31,6 @@ class Login extends Component {
       alert(`Welcome back, ${this.state.email}!`);
       this.props.handleSetUser(user);
       this.props.history.push("/home");
-
     } catch (error) {
       alert(
         "Something went wrong. Either the account doesn't exist or you entered in the credentials the wrong way. Try again!"
@@ -41,7 +41,9 @@ class Login extends Component {
   render() {
     return (
       <div className="whole_app">
-           <div className="background_image"></div>
+        <video autoplay="true" loop="true" style={{filter: 'blur(6px)', width: '100vw', height: '100%'}}>
+        <source src={video}/>
+        </video>
         <div className="login_box">
           <h1>Croozer Sign In</h1>
           <TextField
@@ -76,14 +78,18 @@ class Login extends Component {
             }}
           />
           <div className="login_button_wrap">
-            <Button  color="default" onClick={this.signIn}>
+            <Button color="default" onClick={this.signIn}>
               Sign In
             </Button>
-            <Button  color="default">
-              <Link style={{color: 'black'}} to="/forgot">Forgot Password?</Link>
+            <Button color="default">
+              <Link style={{ color: "black" }} to="/forgot">
+                Forgot Password?
+              </Link>
             </Button>
-            <Button  color="default" id="login_button">
-              <Link style={{color: 'black'}} to="/signup">Create New Account</Link>
+            <Button color="default" id="login_button">
+              <Link style={{ color: "black" }} to="/signup">
+                Create New Account
+              </Link>
             </Button>
           </div>
           <h2
