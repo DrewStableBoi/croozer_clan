@@ -78,8 +78,13 @@ class HomeContent extends React.Component {
             </div>
           </div>
           <div className="home_info_right_containerRight">
-            <div>
-              <h1>Blue Days = Scheduled Days</h1>
+            <div
+              style={{
+                boxShadow: "10px 15px 5px rgb(0, 0, 0)",
+                border: "4px solid grey",
+                borderRadius: "15px"
+              }}
+            >
               <AppCalendar {...this.props} user={this.props.user} />{" "}
             </div>
             <div className="home_info_right_containerRight_events">

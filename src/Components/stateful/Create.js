@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import video from "../../video_and_sound_files/street_fighter.mp4"
+import video from "../../video_and_sound_files/street_fighter.mp4";
 
 class Create extends Component {
   constructor() {
@@ -47,8 +47,8 @@ class Create extends Component {
   render() {
     return (
       <div className="whole_app">
-        <video autoplay="true" muted loop="true" style={{filter: 'blur(6px)', width: '100vw', height: '100%'}}>
-        <source src={video}/>
+        <video autoplay="true" muted loop="true" id="myVideo">
+          <source src={video} />
         </video>
         <div className="login_box">
           <h1 style={{ fontSize: "40px" }}>Create Your Account</h1>

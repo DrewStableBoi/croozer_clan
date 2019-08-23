@@ -55,11 +55,15 @@ class App extends Component {
             />
 
             <Route component={Create} path="/signup" />
+            <Route component={FirstTime} path="/firsttime" />
+            <Route component={ForgotPassword} path = "/forgot" /> 
+            <Route component={materialLogin} path="/logintest" />
+
 
             <Route
               render={props => {
                 const { user } = this.state;
-                if (user.display_name) {
+                // if (user.display_name) {
                   return (
                     <Home 
                       {...props}
@@ -67,14 +71,14 @@ class App extends Component {
                       handleSetUser={this.handleSetUser}
                     />
                   );
-                } else {
-                  return <Redirect to="/firsttime" />;
-                }
+                // } else {
+                //   return <Redirect to="/firsttime" />;
+                // }
               }}
               path="/home"
             />
 
-            <Route
+            {/* <Route
               render={props => {
                 const { user } = this.state;
                 if (!user.display_name && user.email) {
@@ -91,9 +95,9 @@ class App extends Component {
               }}
               exact
               path="/firsttime"
-            />
+            /> */}
 
-            <Route
+            {/* <Route
               render={props => {
                 return (
                   <ForgotPassword
@@ -105,8 +109,7 @@ class App extends Component {
               }}
               exact
               path="/forgot"
-            />
-            <Route component={materialLogin} path="/logintest" />
+            /> */}
           </Switch>
         </Router>
       </div>

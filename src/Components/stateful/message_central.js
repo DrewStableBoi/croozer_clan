@@ -6,6 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Popup from "reactjs-popup";
+import moment from "../../../node_modules/moment";
 
 class MessageCentral extends Component {
   constructor() {
@@ -15,7 +16,10 @@ class MessageCentral extends Component {
       user: {},
       userMessages: [],
       responseSubject: "",
-      responseMessage: ""
+      responseMessage: "",
+      newSubject: "",
+      newMessage: "",
+      userList: []
     };
   }
 
@@ -111,6 +115,71 @@ class MessageCentral extends Component {
             <Button color="default" onClick={this.refreshMessages}>
               Refresh Messages
             </Button>
+
+            {/* <Popup
+              trigger={<Button color="default">Send A Message</Button>}
+              position="right center"
+              modal
+            >
+              {close => (
+                <div className="messageContainer">
+                  <h1
+                    style={{
+                      fontSize: "25px",
+                      textDecorationLine: "underline"
+                    }}
+                  >
+                    Find a User, Send a Message!
+                  </h1>
+                  <h2 style={{ color: "grey" }}>Subject</h2>
+                  <textarea
+                    className="messageSubject"
+                    name="text"
+                    wrap="soft"
+                    required
+                    value={this.state.responseSubject}
+                    onChange={event => {
+                      this.setState({
+                        responseSubject: event.target.value
+                      });
+                    }}
+                  >
+                    {" "}
+                  </textarea>
+                  <h2 style={{ color: "grey" }}>Message Body</h2>{" "}
+                  <textarea
+                    className="message"
+                    name="text"
+                    wrap="soft"
+                    required
+                    value={this.state.responseMessage}
+                    onChange={event => {
+                      this.setState({
+                        responseMessage: event.target.value
+                      });
+                    }}
+                  >
+                    {" "}
+                  </textarea>
+                  <div className="messageButtons">
+                    <Button
+                      size="small"
+                      color="default"
+                      onClick={() => this.sendMessage(index.sender_id, close)}
+                    >
+                      Send Message
+                    </Button>
+                    <Button
+                      size="small"
+                      color="default"
+                      onClick={() => this.clearMessage}
+                    >
+                      Clear Message
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </Popup> */}
           </div>
         </div>
         {this.state.userMessages.length === 0 ? (
@@ -156,9 +225,13 @@ class MessageCentral extends Component {
                           paddingRight: "5px"
                         }}
                       >
-                        Sent at:
+                        Sent:
                       </h1>
-                      <h2>{index.time_of_message}</h2>
+                      <h2>
+                        {moment(index.time_of_message).format(
+                          "dddd, MMMM Do YYYY, h:mm:ss a"
+                        )}
+                      </h2>
                     </div>
                   </div>
                   <div className="messageCentral_buttons">
@@ -166,80 +239,84 @@ class MessageCentral extends Component {
                       trigger={<button>Respond</button>}
                       position="right center"
                       modal
-                    > 
-                    {close =>(
-                      <div className="messageContainer">
-                        <h1
-                          style={{
-                            fontSize: "25px",
-                            textDecorationLine: "underline"
-                          }}
-                        >
-                          Send them a Reply!
-                        </h1>
-                        <h2 style={{ color: "grey" }}>Subject</h2>
-                        <textarea
-                          className="messageSubject"
-                          name="text"
-                          wrap="soft"
-                          required
-                          value={this.state.responseSubject}
-                          onChange={event => {
-                            this.setState({
-                              responseSubject: event.target.value
-                            });
-                          }}
-                        >
-                          {" "}
-                        </textarea>
-                        <h2 style={{ color: "grey" }}>Message Body</h2>{" "}
-                        <textarea
-                          className="message"
-                          name="text"
-                          wrap="soft"
-                          required
-                          value={this.state.responseMessage}
-                          onChange={event => {
-                            this.setState({
-                              responseMessage: event.target.value
-                            });
-                          }}
-                        >
-                          {" "}
-                        </textarea>
-                        <div className="messageButtons">
-                          <Button
-                            size="small"
-                            color="default"
-                            onClick={() => this.sendMessage(index.sender_id, close)}
+                    >
+                      {close => (
+                        <div className="messageContainer">
+                          <h1
+                            style={{
+                              fontSize: "25px",
+                              textDecorationLine: "underline"
+                            }}
                           >
-                            Send Message
-                          </Button>
-                          <Button
-                            size="small"
-                            color="default"
-                            onClick={() => this.clearMessage}
+                            Send them a Reply!
+                          </h1>
+                          <h2 style={{ color: "grey" }}>Subject</h2>
+                          <textarea
+                            className="messageSubject"
+                            name="text"
+                            wrap="soft"
+                            required
+                            value={this.state.responseSubject}
+                            onChange={event => {
+                              this.setState({
+                                responseSubject: event.target.value
+                              });
+                            }}
                           >
-                            Clear Message
-                          </Button>
+                            {" "}
+                          </textarea>
+                          <h2 style={{ color: "grey" }}>Message Body</h2>{" "}
+                          <textarea
+                            className="message"
+                            name="text"
+                            wrap="soft"
+                            required
+                            value={this.state.responseMessage}
+                            onChange={event => {
+                              this.setState({
+                                responseMessage: event.target.value
+                              });
+                            }}
+                          >
+                            {" "}
+                          </textarea>
+                          <div className="messageButtons">
+                            <Button
+                              size="small"
+                              color="default"
+                              onClick={() =>
+                                this.sendMessage(index.sender_id, close)
+                              }
+                            >
+                              Send Message
+                            </Button>
+                            <Button
+                              size="small"
+                              color="default"
+                              onClick={() => this.clearMessage}
+                            >
+                              Clear Message
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                     </Popup>
                     <Popup
                       trigger={<button>Delete</button>}
                       position="right center"
                     >
-                    {close => (
-                      <div>
-                        Are you sure you want to?
-                        <button
-                          onClick={() => this.deleteMessage(index.message_id, close)}
-                        >
-                          Yes
-                        </button>
-                        <button>No</button>
-                      </div>
+                      {close => (
+                        <div>
+                          Are you sure you want to?
+                          <button
+                            onClick={() =>
+                              this.deleteMessage(index.message_id, close)
+                            }
+                          >
+                            Yes
+                          </button>
+                          <button>No</button>
+                        </div>
                       )}
                     </Popup>
                   </div>

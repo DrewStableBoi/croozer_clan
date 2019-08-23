@@ -1,4 +1,3 @@
-
 .whole_app {
   position: fixed;
   display: flex;
@@ -55,7 +54,7 @@
   box-shadow: 10px 15px 5px grey;
   border: 4px solid grey;
   border-radius: 15px;
-  background: rgba(255,255,255,0.8)
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .login_text {
@@ -100,22 +99,31 @@ a {
 
 #first_time {
   flex-direction: row;
-  background-image: url("http://getwallpapers.com/wallpaper/full/9/5/b/484493.jpg");
   background-size: auto;
+}
+
+#myVideo {
+  position: fixed;
+  filter: blur(6px);
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .firstTime_create {
   display: flex;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   opacity: 0.8;
   flex-direction: column;
   justify-content: space-around;
   align-items: left;
   height: 95%;
-  width: 50%;
+  width: 30%;
   margin-left: 10px;
   padding: 16px;
-  border: 2px solid black;
+  box-shadow: 10px 15px 5px rgb(0, 0, 0);
+  border: 4px solid grey;
   border-radius: 15px;
 }
 
@@ -134,11 +142,12 @@ a {
   opacity: 0.8;
   justify-content: space-between;
   height: 95%;
-  width: 50%;
+  width: 70%;
   margin: 10px;
   text-align: left;
   padding: 10px;
-  border: 2px solid black;
+  box-shadow: 10px 15px 5px rgb(0, 0, 0);
+  border: 4px solid grey;
   border-radius: 15px;
 }
 
@@ -148,14 +157,14 @@ a {
 }
 
 #firstTime_info_headers {
-  font-size: 20px;
+  font-size: 33px;
   color: black;
   border: bottom;
   border-style: dotted;
 }
 
 #firstTime_info_content {
-  font-size: 16px;
+  font-size: 22px;
   color: grey;
 }
 
@@ -185,16 +194,23 @@ a {
   height: 100%;
 }
 
+.calendarPop {
+  color: grey !important;
+  background-color: blue !important;
+}
+
 .home_info_left_container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   background-color: #76828c;
+  overflow-x: auto;
+  overflow-y: auto;
   height: 100%;
   width: 20vw;
   padding: 15px;
   border-right: 4px rgb(12, 12, 12);
-  border-right-style: dashed;
+  border-right-style: solid;
 }
 
 .home_info_left_item {
@@ -232,14 +248,18 @@ a {
   justify-content: space-evenly;
   align-items: center;
   height: 100%;
-  width: 60%;
+  width: 70%;
 }
 
 .home_info_right_containerRight_events {
   display: flex;
   height: 50%;
   width: 90%;
-  border: 4px solid;
+  overflow: auto;
+  overflow-x: auto;
+  box-shadow: 10px 15px 5px rgb(0, 0, 0);
+  border: 4px solid grey;
+  border-radius: 15px;
 }
 
 .home_info_right_containerLeft {
@@ -257,7 +277,9 @@ a {
   background-color: #76828c;
   height: 250px;
   width: 90%;
-  border: 3px solid black;
+  box-shadow: 10px 15px 5px rgb(0, 0, 0);
+  border: 4px solid grey;
+  border-radius: 15px;
 }
 
 .home_info_right_containerLeft_API_content {
@@ -266,9 +288,10 @@ a {
   overflow: auto;
   height: 50%;
   width: 90%;
-  border: 3px solid black;
   background-color: #76828c;
-
+  box-shadow: 10px 15px 5px rgb(0, 0, 0);
+  border: 4px solid grey;
+  border-radius: 15px;
 }
 
 .search_container {
@@ -295,7 +318,7 @@ a {
   overflow: auto;
   margin: 10px;
   width: 100%;
-  height: 100%;
+  height: 80%;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
@@ -313,6 +336,70 @@ a {
   align-items: flex-start;
   height: 400px;
   width: auto;
+}
+
+.eventContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 10px;
+  padding: 10px;
+  width: 100%;
+}
+.eventSearch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 30%;
+  width: 50%;
+  margin: 5px;
+  padding: 5px;
+}
+
+.eventCreate {
+  display: flex;
+  flex-direction: column;
+  /* border: solid 4px black; */
+  align-items: flex-start;
+  justify-content: center;
+  height: 90%;
+  margin: 5px;
+  padding: 5px;
+}
+
+.eventCreateAndDescribe {
+  display: flex;
+  /* border: 4px solid black; */
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.eventCreateSelectors {
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+align-items: flex-start;
+/* border: 4px solid black; */
+height: 60%;
+width: 100%;
+}
+
+.eventDescription {
+  display: flex;
+  border: 3px solid;
+  height: 50%;
+  width: 50%;
+}
+
+.eventRenderContainer {
+  display: flex;
+  border: 4px solid green;
+  width: 100%;
+  padding: 10px;
+  height: 80%;
+  justify-content: center;
 }
 
 .messageTitle {
@@ -381,63 +468,4 @@ a {
 
 .calendar {
   height: 100%;
-}
-
-/* The below is for the home nav bar at the top */
-
-/* Add a black background color to the top navigation bar */
-.topnav {
-  display: flex;
-  overflow: hidden;
-  background-color: #334652;
-  width: 100%;
-}
-
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Style the "active" element to highlight the current page */
-.topnav a.active {
-  background-color: #2196f3;
-  color: white;
-}
-
-/* Style the search box inside the navigation bar */
-.topnav input[type="text"] {
-  float: right;
-  padding: 6px;
-  border: none;
-  margin-top: 8px;
-  margin-right: 16px;
-  font-size: 17px;
-}
-
-/* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
-@media screen and (max-width: 600px) {
-  .topnav a,
-  .topnav input[type="text"] {
-    float: none;
-    display: block;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-    padding: 14px;
-  }
-  .topnav input[type="text"] {
-    border: 1px solid #ccc;
-  }
 }

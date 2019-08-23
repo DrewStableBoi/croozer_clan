@@ -43,7 +43,15 @@ app.post("/sendMessage", controller.sendMessage);
 app.post("/addFriend", controller.addFriend);
 app.get("/getMessages", controller.getMessages)
 app.delete("/message/:id", controller.deleteMessage);
-app.get("/getEvents", controller.getEvents)
+app.delete("/event/:id", controller.deleteEvent)
+app.get("/getEvents", controller.getEvents);
+app.post("/scheduleEvent", controller.scheduleEvent);
+app.get("/getUserFriends", controller.getUserFriends);
+app.post("/eventWin/:id", controller.wonEvent);
+app.post("/eventLoss/:id", controller.lostEvent);
+app.get("/getEventDays", controller.getEventDays);
+
+
 
 app.get("/me", (req, res) => {
   res.send(req.session.user);

@@ -4,7 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import video from "../../video_and_sound_files/croozer_rap.mp4"
+import video from "../../video_and_sound_files/croozer_rap.mp4";
+import loginSong from "../../video_and_sound_files/A1H.wav";
 
 class Login extends Component {
   constructor() {
@@ -38,11 +39,21 @@ class Login extends Component {
     }
   };
 
+
   render() {
+
+    var audio = new Audio(loginSong);
+
     return (
       <div className="whole_app">
-        <video autoplay="true" loop="true" style={{filter: 'blur(6px)', width: '100vw', height: '100%'}}>
-        <source src={video}/>
+        <video
+          autoplay="true"
+          muted
+          loop="true"
+          id="myVideo"
+
+        >
+          <source src={video} />
         </video>
         <div className="login_box">
           <h1>Croozer Sign In</h1>

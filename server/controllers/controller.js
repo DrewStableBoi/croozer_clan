@@ -76,7 +76,8 @@ module.exports = {
             "The user does not exist. Please enter a valid email and password"
           );
 
-      const authenticated = bcrypt.compare(password, user.password);
+      const authenticated = await bcrypt.compare(password, user.password);
+      console.log(authenticated);
 
       if (!authenticated) {
         return res.status(400).send("Please authenticate!");
@@ -173,7 +174,6 @@ module.exports = {
     user_messages um JOIN users u ON u.id = um.sender_id WHERE recipient_id = ${
       req.query.id
     }`;
-    console.log(query);
     db.query(query)
       .then(result => {
         res.status(200).send(result);
@@ -186,10 +186,17 @@ module.exports = {
 
   getEvents: (req, res) => {
     const db = req.app.get("db");
-    const query = `SELECT u.display_name as sender_name, ue.event_id, ue.challenger_id, ue.accepter_id, u.first_name || ' ' || u.last_name as challenger_full_name, ue.event_description, ue.time_of_event, ue.event_finished FROM 
-    user_events ue JOIN users u ON u.id = ue.challenger_id WHERE accepter_id = ${
-      req.query.id
-    }`;
+    const query = `WITH first_query AS 
+    (
+    SELECT u.display_name as sender_name, ue.event_id, ue.challenger_id, ue.accepter_id, u.first_name || ' ' || u.last_name as challenger_full_name, ue.event_description, ue.day_of_event, ue.event_category, ue.event_arena, ue.event_activity, ue.event_finished, ue.challenger_win, ue.accepter_win FROM 
+    user_events ue JOIN users u ON u.id = ue.challenger_id WHERE accepter_id = 
+    ${req.query.id}
+    OR challenger_id =  ${req.query.id}
+    )
+    SELECT fq.*, u.first_name || ' ' || u.last_name as accepter_full_name
+    FROM
+    users u
+    JOIN first_query fq ON u.id = fq.accepter_id;`;
     console.log(query);
     db.query(query)
       .then(result => {
@@ -199,6 +206,36 @@ module.exports = {
         res.status(500).send(err);
         console.log(err);
       });
+  },
+
+  wonEvent: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `UPDATE user_events SET challenger_win = TRUE, accepter_win = FALSE, event_finished = TRUE WHERE event_id = ${id};`
+    console.log(query);
+    db.query(query)
+    .then(result => {
+      res.status(200).send(result);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
+    });
+  },
+
+  lostEvent: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `UPDATE user_events SET challenger_win = FALSE, accepter_win = TRUE, event_finished = TRUE WHERE event_id = ${id};`
+    console.log(query);
+    db.query(query)
+    .then(result => {
+      res.status(200).send(result);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+      console.log(err);
+    });
   },
 
   deleteMessage: (req, res) => {
@@ -215,6 +252,22 @@ module.exports = {
         console.log(err);
       });
   },
+
+  deleteEvent: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `DELETE FROM user_events WHERE event_id = ${id}`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
+  },
+
 
   deleteUser: (req, res) => {
     if (!req.session.user) return res.status(401).send("Please log in");
@@ -267,5 +320,74 @@ module.exports = {
     } catch (error) {
       res.status(500).send(error);
     }
-  }
+  },
+
+  scheduleEvent: (req, res) => {
+    const db = req.app.get("db");
+    const {
+      challenger_id,
+      accepter_id,
+      event_description,
+      day_of_event,
+      event_category,
+      event_arena,
+      event_activity
+    } = req.body;
+
+    const query = `INSERT INTO user_events ("challenger_id", "accepter_id", "event_description", 
+    "event_category", "event_arena", "event_activity", 
+    "day_of_event", "event_finished", "created_at") VALUES
+    (
+      ${challenger_id},
+      ${accepter_id},
+      $$${event_description}$$,
+      $$${event_category}$$,
+      $$${event_arena}$$,
+      $$${event_activity}$$,
+      $$${day_of_event}$$,
+      false,
+      NOW()
+    );`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  getUserFriends: (req, res) => {
+    const db = req.app.get("db");
+    const id = req.query.id;
+    const query = `SELECT DISTINCT user_id, friend_id, user_email, 
+    friend_email, user_display, friend_display, time_of_addition FROM
+    users_friend WHERE user_id = ${id} AND request_approved IS TRUE;`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  getEventDays: (req, res) => {
+      const db = req.app.get("db");
+      const id = req.query.id;
+      const query = `SELECT day_of_event FROM user_events WHERE challenger_id = ${id} OR accepter_id = ${id}`;
+      console.log(query);
+      db.query(query)
+        .then(result => {
+          res.status(200).send(result);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).send(err);
+        });
+    }
 };
