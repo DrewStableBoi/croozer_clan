@@ -11,7 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
-import moment from 'moment';
+import moment from "moment";
 
 class EventSchedule extends Component {
   constructor() {
@@ -72,7 +72,7 @@ class EventSchedule extends Component {
     close();
   };
 
-  scheduleEvent = async (close) => {
+  scheduleEvent = async close => {
     const eventObject = {
       challenger_id: this.state.mainUser.id,
       accepter_id: this.state.selectedFriendId,
@@ -95,7 +95,6 @@ class EventSchedule extends Component {
     } catch (error) {
       alert("Something went wrong!");
     }
-
   };
 
   deleteEvent = async (id, close) => {
@@ -103,7 +102,6 @@ class EventSchedule extends Component {
       await axios.delete(`/event/${id}`);
       this.refreshEvents();
       alert("Event Deleted!");
-      this.props.history.push("/home");
       close();
     } catch (err) {
       console.log(err);
@@ -119,14 +117,13 @@ class EventSchedule extends Component {
         userEvents: response.data
       });
     });
-  }; 
+  };
 
   setOutcomeWin = async (id, close) => {
     try {
       await axios.post(`/eventWin/${id}`);
       this.refreshEvents();
       alert("Congratulations on the win!");
-      this.deleteEvent(id);
       close();
     } catch (err) {
       console.log(err);
@@ -139,7 +136,6 @@ class EventSchedule extends Component {
       await axios.post(`/eventLoss/${id}`);
       this.refreshEvents();
       alert("Welp, you suck! Don't lose next time!");
-      this.deleteEvent(id);
       close();
     } catch (err) {
       alert("Something went wrong!");
@@ -161,7 +157,7 @@ class EventSchedule extends Component {
         "Nintendo Switch",
         "PC Gaming"
       ],
-      "Sports": ["Basketball", "Baseball"],
+      Sports: ["Basketball", "Baseball"],
       "TV/Movie Binge-Watching": ["Netflix", "Hulu"],
       "Board Games": ["Game Store", "Casual/At Home"]
     };
@@ -259,6 +255,22 @@ class EventSchedule extends Component {
                       <h2 style={{ color: "grey", fontSize: "25px" }}>
                         Select Friend Here
                       </h2>
+                      <Button
+                        color="default"
+                        onClick={() => {
+                          const id = this.props.user.id;
+                          axios
+                            .get("/getUserFriends", { params: { id } })
+                            .then(response => {
+                              this.setState({
+                                userFriends: response.data
+                              });
+                            });
+                        }}
+                      >
+                        Friend Refresh
+                      </Button>
+
                       <FormControl style={{ width: "70%", textAlign: "left" }}>
                         <InputLabel>Friend List</InputLabel>
                         <Select
@@ -271,8 +283,8 @@ class EventSchedule extends Component {
                         >
                           {this.state.userFriends.map(friend => {
                             return (
-                              <MenuItem value={friend.friend_id}>
-                                {friend.friend_display}
+                              <MenuItem value={friend.requester_id}>
+                                {friend.requester_display}
                               </MenuItem>
                             );
                           })}
@@ -407,9 +419,11 @@ class EventSchedule extends Component {
                     </div>
                   </div>
                   <div className="messageButtons">
-                    <Button size="small" color="default" onClick={() =>
-                                this.scheduleEvent(close)
-                              }>
+                    <Button
+                      size="small"
+                      color="default"
+                      onClick={() => this.scheduleEvent(close)}
+                    >
                       Schedule Event
                     </Button>
                     <Button
@@ -482,19 +496,23 @@ class EventSchedule extends Component {
                     >
                       {close => (
                         <div>
-                        What was the outcome? 
-                        <button
-                          onClick={() =>
-                            this.setOutcomeWin(index.event_id, close)
-                          }
-                        >
-                          Win
-                        </button>
-                        <button onClick={() =>
-                            this.setOutcomeLoss(index.event_id, close)
-                          }>Loss</button>
-                      </div>
-                    )}
+                          What was the outcome?
+                          <button
+                            onClick={() =>
+                              this.setOutcomeWin(index.event_id, close)
+                            }
+                          >
+                            Win
+                          </button>
+                          <button
+                            onClick={() =>
+                              this.setOutcomeLoss(index.event_id, close)
+                            }
+                          >
+                            Loss
+                          </button>
+                        </div>
+                      )}
                     </Popup>
                     <Popup
                       trigger={<button>Delete Event</button>}
@@ -510,7 +528,13 @@ class EventSchedule extends Component {
                           >
                             Yes
                           </button>
-                          <button>No</button>
+                          <button
+                            onClick={() => {
+                              close();
+                            }}
+                          >
+                            No
+                          </button>
                         </div>
                       )}
                     </Popup>

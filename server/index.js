@@ -45,12 +45,16 @@ app.get("/getMessages", controller.getMessages)
 app.delete("/message/:id", controller.deleteMessage);
 app.delete("/event/:id", controller.deleteEvent)
 app.get("/getEvents", controller.getEvents);
+app.get("/getFinishedEvents", controller.getFinishedEvents);
 app.post("/scheduleEvent", controller.scheduleEvent);
 app.get("/getUserFriends", controller.getUserFriends);
+app.get("/getFriendRequests", controller.getFriendRequests);
 app.post("/eventWin/:id", controller.wonEvent);
 app.post("/eventLoss/:id", controller.lostEvent);
 app.get("/getEventDays", controller.getEventDays);
-
+app.post("/approve/:id", controller.approveRequest);
+app.post("/deny/:id", controller.denyRequest);
+app.get("/getRecord", controller.getRecord);
 
 
 app.get("/me", (req, res) => {

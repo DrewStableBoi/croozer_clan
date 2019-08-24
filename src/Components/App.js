@@ -56,6 +56,7 @@ class App extends Component {
 
             <Route component={Create} path="/signup" />
             <Route component={FirstTime} path="/firsttime" />
+            <Route component={FirstTime} path="/changeAccount" />
             <Route component={ForgotPassword} path = "/forgot" /> 
             <Route component={materialLogin} path="/logintest" />
 

@@ -8,7 +8,10 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import axios from 'axios';
+import axios from "axios";
+import Popup from "reactjs-popup";
+import "../../App.css";
+import moment from "../../../node_modules/moment";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,24 +27,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  console.log(props);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
-  };
+  }
 
   function handleClose() {
     setAnchorEl(null);
-  };
+  }
 
   function redirectFirst() {
     return alert("Coming soon");
-  };
-
-  function friendRequests() {
-    return alert("Coming soon");
-  };
+  }
 
   const logout = async () => {
     try {
@@ -51,6 +49,14 @@ export default function Header(props) {
     } catch (error) {
       console.log(error);
       alert("Something went wrong!");
+    }
+  };
+
+  const whoWon = event => {
+    if (event.challenger_win === false) {
+      return event.accepter_full_name;
+    } else {
+      return event.challenger_full_name;
     }
   };
 
@@ -74,17 +80,74 @@ export default function Header(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Friend Requests</MenuItem>
+            <Popup
+              trigger={
+                <MenuItem onClick={handleClose}>Event Breakdown</MenuItem>
+              }
+              position="right center"
+              modal
+            >
+              {close => (
+                <div className="eventModalContainer">
+                  <h1
+                    style={{
+                      fontSize: "25px",
+                      textDecorationLine: "underline"
+                    }}
+                  >
+                    {" "}
+                    Event Breakdown!
+                  </h1>
+                  {props.events.map(event => {
+                    return (
+                      <div className="eventModal_innerContainer">
+                        <div>
+                          <h1>Challenger:</h1>
+                          {event.challenger_full_name}
+                        </div>
+                        <div>
+                          <h1>Accepter:</h1>
+                          {event.accepter_full_name}
+                        </div>
+                        <div>
+                          <h1>Event Description:</h1>
+                          {event.event_activity}
+                        </div>
+                        <div>
+                          <h1>Time of Event:</h1>
+                          {moment(event.day_of_event).format("MMMM Do YYYY")}
+                        </div>
+                        <div>
+                          <h1>Who Won?</h1>
+                          {whoWon(event)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <Button size="small" color="default" variant="outlined" style={{width: '20%'}} onClick={() => {close();}}>
+                    Go Back
+                  </Button>
+                </div>
+              )}
+            </Popup>
+
             <MenuItem onClick={handleClose}>Change Account Settings</MenuItem>
-            <MenuItem onClick={handleClose}>Event Record</MenuItem>
           </Menu>
           <Typography
             variant="h6"
             className={classes.title}
-            style={{ display: "flex" }} 
+            style={{ display: "flex" }}
           >
-            Welcome to Croozer, BOI!
+            Welcome to Croozer!
           </Typography>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            style={{ display: "flex" }}
+          >
+            Current Record: {props.wins} Wins // {props.losses} Losses
+          </Typography>
+
           <Button color="inherit" onClick={logout}>
             Logout
           </Button>
@@ -93,4 +156,3 @@ export default function Header(props) {
     </div>
   );
 }
-

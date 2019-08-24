@@ -2,7 +2,7 @@ import React from "react";
 import "../../App.css";
 import SearchAdd from "./search_add";
 import MessageCentral from "./message_central";
-import AppCalendar from "./calendar";
+import FriendRequests from "./friend_requests";
 import EventScheduler from "./event_scheduler";
 
 class HomeContent extends React.Component {
@@ -78,14 +78,8 @@ class HomeContent extends React.Component {
             </div>
           </div>
           <div className="home_info_right_containerRight">
-            <div
-              style={{
-                boxShadow: "10px 15px 5px rgb(0, 0, 0)",
-                border: "4px solid grey",
-                borderRadius: "15px"
-              }}
-            >
-              <AppCalendar {...this.props} user={this.props.user} />{" "}
+            <div className="home_info_right_containerRight_events" style = {{height: '30%'}}>
+              <FriendRequests {...this.props} user={this.props.user} />{" "}
             </div>
             <div className="home_info_right_containerRight_events">
               <EventScheduler {...this.props} user={this.props.user} />

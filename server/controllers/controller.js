@@ -147,7 +147,7 @@ module.exports = {
       user_display,
       friend_display
     } = req.body;
-    const query = `INSERT INTO users_friend("user_id", "friend_id", "user_email", "friend_email", "user_display", "friend_display", "request_approved", "time_of_addition") VALUES
+    const query = `INSERT INTO users_friend("requester_id", "friend_id", "requester_email", "friend_email", "requester_display", "friend_display", "request_approved", "time_of_addition", request_denied) VALUES
     (
     ${user_id},
     ${friend_id},
@@ -155,8 +155,9 @@ module.exports = {
     '${friend_email}',
     '${user_display}',
     '${friend_display}',
-    false,
-    NOW()
+    FALSE,
+    NOW(),
+    FALSE
     );`;
     console.log(query);
     db.query(query)
@@ -189,9 +190,33 @@ module.exports = {
     const query = `WITH first_query AS 
     (
     SELECT u.display_name as sender_name, ue.event_id, ue.challenger_id, ue.accepter_id, u.first_name || ' ' || u.last_name as challenger_full_name, ue.event_description, ue.day_of_event, ue.event_category, ue.event_arena, ue.event_activity, ue.event_finished, ue.challenger_win, ue.accepter_win FROM 
-    user_events ue JOIN users u ON u.id = ue.challenger_id WHERE accepter_id = 
+    user_events ue JOIN users u ON u.id = ue.challenger_id WHERE (accepter_id = 
     ${req.query.id}
-    OR challenger_id =  ${req.query.id}
+    OR challenger_id =  ${req.query.id}) AND event_finished = FALSE
+    )
+    SELECT fq.*, u.first_name || ' ' || u.last_name as accepter_full_name
+    FROM
+    users u
+    JOIN first_query fq ON u.id = fq.accepter_id;`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
+  },
+
+  getFinishedEvents: (req, res) => {
+    const db = req.app.get("db");
+    const query = `WITH first_query AS 
+    (
+    SELECT u.display_name as sender_name, ue.event_id, ue.challenger_id, ue.accepter_id, u.first_name || ' ' || u.last_name as challenger_full_name, ue.event_description, ue.day_of_event, ue.event_category, ue.event_arena, ue.event_activity, ue.event_finished, ue.challenger_win, ue.accepter_win FROM 
+    user_events ue JOIN users u ON u.id = ue.challenger_id WHERE (accepter_id = 
+    ${req.query.id}
+    OR challenger_id =  ${req.query.id}) AND event_finished = TRUE
     )
     SELECT fq.*, u.first_name || ' ' || u.last_name as accepter_full_name
     FROM
@@ -211,31 +236,31 @@ module.exports = {
   wonEvent: (req, res) => {
     const db = req.app.get("db");
     const { id } = req.params;
-    const query = `UPDATE user_events SET challenger_win = TRUE, accepter_win = FALSE, event_finished = TRUE WHERE event_id = ${id};`
+    const query = `UPDATE user_events SET challenger_win = TRUE, accepter_win = FALSE, event_finished = TRUE WHERE event_id = ${id};`;
     console.log(query);
     db.query(query)
-    .then(result => {
-      res.status(200).send(result);
-    })
-    .catch(err => {
-      res.status(500).send(err);
-      console.log(err);
-    });
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
   },
 
   lostEvent: (req, res) => {
     const db = req.app.get("db");
     const { id } = req.params;
-    const query = `UPDATE user_events SET challenger_win = FALSE, accepter_win = TRUE, event_finished = TRUE WHERE event_id = ${id};`
+    const query = `UPDATE user_events SET challenger_win = FALSE, accepter_win = TRUE, event_finished = TRUE WHERE event_id = ${id};`;
     console.log(query);
     db.query(query)
-    .then(result => {
-      res.status(200).send(result);
-    })
-    .catch(err => {
-      res.status(500).send(err);
-      console.log(err);
-    });
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+        console.log(err);
+      });
   },
 
   deleteMessage: (req, res) => {
@@ -267,7 +292,6 @@ module.exports = {
         console.log(err);
       });
   },
-
 
   deleteUser: (req, res) => {
     if (!req.session.user) return res.status(401).send("Please log in");
@@ -336,7 +360,7 @@ module.exports = {
 
     const query = `INSERT INTO user_events ("challenger_id", "accepter_id", "event_description", 
     "event_category", "event_arena", "event_activity", 
-    "day_of_event", "event_finished", "created_at") VALUES
+    "day_of_event", "event_finished", "created_at", challenger_win, accepter_win) VALUES
     (
       ${challenger_id},
       ${accepter_id},
@@ -346,7 +370,9 @@ module.exports = {
       $$${event_activity}$$,
       $$${day_of_event}$$,
       false,
-      NOW()
+      NOW(),
+      false,
+      false
     );`;
     console.log(query);
     db.query(query)
@@ -362,9 +388,60 @@ module.exports = {
   getUserFriends: (req, res) => {
     const db = req.app.get("db");
     const id = req.query.id;
-    const query = `SELECT DISTINCT user_id, friend_id, user_email, 
-    friend_email, user_display, friend_display, time_of_addition FROM
-    users_friend WHERE user_id = ${id} AND request_approved IS TRUE;`;
+    const query = `SELECT DISTINCT requester_id, friend_id, requester_email, 
+    friend_email, requester_display, friend_display, time_of_addition FROM
+    users_friend WHERE friend_id = ${id} AND request_approved IS TRUE;`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  getFriendRequests: (req, res) => {
+    const db = req.app.get("db");
+    const id = req.query.id;
+    const query = `SELECT DISTINCT request_id, requester_id, friend_id, requester_email, 
+    friend_email, requester_display, friend_display, time_of_addition, u.first_name || ' ' || u.last_name as requester_full_name FROM
+    users_friend 
+    JOIN users u ON users_friend.requester_id = u.id 
+    WHERE friend_id = ${id} AND request_approved IS FALSE AND request_denied = FALSE;`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  approveRequest: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `UPDATE users_friend SET request_approved = TRUE, request_denied = FALSE 
+    WHERE request_id = ${id}`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  denyRequest: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `UPDATE users_friend SET request_approved = FALSE, request_denied = TRUE 
+    WHERE request_id = ${id}`;
     console.log(query);
     db.query(query)
       .then(result => {
@@ -377,17 +454,62 @@ module.exports = {
   },
 
   getEventDays: (req, res) => {
-      const db = req.app.get("db");
-      const id = req.query.id;
-      const query = `SELECT day_of_event FROM user_events WHERE challenger_id = ${id} OR accepter_id = ${id}`;
-      console.log(query);
-      db.query(query)
-        .then(result => {
-          res.status(200).send(result);
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).send(err);
-        });
-    }
+    const db = req.app.get("db");
+    const id = req.query.id;
+    const query = `SELECT day_of_event FROM user_events WHERE challenger_id = ${id} OR accepter_id = ${id}`;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  getRecord: (req, res) => {
+    const db = req.app.get("db");
+    const id = req.query.id;
+    const query = 
+    `
+    WITH finally AS 
+    (
+    WITH almost AS 
+    (
+    WITH staging_counts AS 
+    (
+    WITH staging AS 
+    (
+    SELECT CASE WHEN challenger_id = ${id} AND challenger_win = TRUE THEN ${id} ELSE 0 END as first_win,
+    CASE WHEN challenger_id = ${id} AND challenger_win = FALSE THEN ${id} ELSE 0 END as first_loss,
+    CASE WHEN accepter_id = ${id} AND accepter_win = TRUE THEN ${id} ELSE 0 END as second_win,
+    CASE WHEN accepter_id = ${id} AND accepter_win = FALSE THEN ${id} ELSE 0 END as second_loss
+    FROM
+    user_events WHERE user_events.challenger_id = ${id} OR user_events.accepter_id = ${id}
+    )
+    SELECT * FROM staging s
+    )
+    SELECT sc.first_win::numeric + sc.second_win::numeric AS total_wins, sc.first_loss::numeric + sc.second_loss::numeric AS total_losses
+    FROM
+    staging_counts sc
+    )
+    SELECT SUM(a.total_wins) OVER () as total_wins, SUM(a.total_losses) OVER () as total_losses
+    FROM
+    almost a
+    )
+    SELECT DISTINCT f.total_wins, f.total_losses
+    FROM
+    finally f
+    `;
+    console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result[0]);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  }
 };
