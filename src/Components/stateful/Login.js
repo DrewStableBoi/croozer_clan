@@ -32,7 +32,7 @@ class Login extends Component {
 
       this.setState({ login: true });
       audio.play();
-      alert(`Welcome back, ${this.state.email}!`);
+      alert(`Welcome back, ${this.state.email}!`); 
       this.props.handleSetUser(user);
       this.props.history.push("/home");
     } catch (error) {

@@ -27,11 +27,12 @@ class Home extends Component {
       this.getRecord();
       this.getFinishedEvents();
     }
-  }
+  } 
 
   getRecord = () => {
     const id = this.props.user.id;
     axios.get("/getRecord", { params: { id } }).then(response => {
+      console.log(response)
       this.setState({
         userWins: response.data.total_wins,
         userLosses: response.data.total_losses

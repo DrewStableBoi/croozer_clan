@@ -496,10 +496,10 @@ module.exports = {
     (
     WITH staging AS 
     (
-    SELECT CASE WHEN challenger_id = ${id} AND challenger_win = TRUE THEN ${id} ELSE 0 END as first_win,
-    CASE WHEN challenger_id = ${id} AND challenger_win = FALSE THEN ${id} ELSE 0 END as first_loss,
-    CASE WHEN accepter_id = ${id} AND accepter_win = TRUE THEN ${id} ELSE 0 END as second_win,
-    CASE WHEN accepter_id = ${id} AND accepter_win = FALSE THEN ${id} ELSE 0 END as second_loss
+    SELECT CASE WHEN challenger_id = ${id} AND challenger_win = TRUE THEN 1 ELSE 0 END as first_win,
+    CASE WHEN challenger_id = ${id} AND challenger_win = FALSE THEN 1 ELSE 0 END as first_loss,
+    CASE WHEN accepter_id = ${id} AND accepter_win = TRUE THEN 1 ELSE 0 END as second_win,
+    CASE WHEN accepter_id = ${id} AND accepter_win = FALSE THEN 1 ELSE 0 END as second_loss
     FROM
     user_events WHERE user_events.challenger_id = ${id} OR user_events.accepter_id = ${id}
     )

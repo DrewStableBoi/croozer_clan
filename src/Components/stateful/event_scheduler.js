@@ -11,13 +11,13 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import moment from "moment";
 import eventSong from "../../video_and_sound_files/9BH.wav";
-import outcomeSong from "../../video_and_sound_files/9CH.wav";
+import outcomeSong from "../../video_and_sound_files/9CH.wav"; 
 
 class EventSchedule extends Component {
   constructor() {
     super();
 
-    this.state = {
+    this.state = { 
       mainUser: {},
       selectedFriendId: "",
       userEvents: [],
@@ -30,7 +30,7 @@ class EventSchedule extends Component {
       activities: [],
       first_toggle: true,
       second_toggle: true
-    };
+    }; 
   }
 
 
@@ -247,7 +247,7 @@ class EventSchedule extends Component {
             }}
           >
             <Popup
-              trigger={<Button color="default">Schedule Event</Button>}
+              trigger={<Button color="default" style={{color: 'white'}}>Schedule Event</Button>}
               position="right center"
               modal
               className="event_scheduler"
@@ -292,6 +292,7 @@ class EventSchedule extends Component {
                         </Select>
                       </FormControl>
                       <Button
+                      size="small"
                         variant="contained"
                         onClick={() => {
                           const id = this.props.user.id;

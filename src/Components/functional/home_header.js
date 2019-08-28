@@ -34,7 +34,7 @@ export default function Header(props) {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  function handleClose() { 
     setAnchorEl(null);
   }
 

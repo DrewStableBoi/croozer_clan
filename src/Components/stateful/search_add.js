@@ -117,7 +117,7 @@ class SearchAdd extends Component {
 
   render() {
     return (
-      <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+      <div style={{ display: "flex", flexDirection: "row", width: "100%", alignItems: 'center' }}>
         <div className="search_container">
           <h1
             style={{
@@ -200,10 +200,10 @@ class SearchAdd extends Component {
             />
           </div>
           <div className="searchButton_container">
-            <Button color="default" onClick={this.searchUsers}>
+            <Button color="default" onClick={this.searchUsers} style={{color: 'white'}}>
               Search
             </Button>
-            <Button color="default" onClick={this.resetState}>
+            <Button color="default" onClick={this.resetState} style={{color: 'white'}}>
               Clear Search
             </Button>
           </div>
@@ -212,7 +212,7 @@ class SearchAdd extends Component {
           {this.state.returnedUsers.length === 0 ? (
             <h1 style={{ fontSize: "18px" }}>
               Nothing here yet - Remember that the search parameters are
-              case-sensitive!
+              case-sensitive! Also remember that you're searching for users based on their activity preferences!
             </h1>
           ) : (
             this.state.returnedUsers.map(person => {

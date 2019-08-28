@@ -149,12 +149,12 @@ class MessageCentral extends Component {
               padding: "10px"
             }}
           >
-            <Button color="default" onClick={this.refreshMessages}>
+            <Button onClick={this.refreshMessages} style={{color: 'white'}}>
               Refresh Messages
             </Button>
 
             <Popup
-              trigger={<Button color="default">Send A Message</Button>}
+              trigger={<Button style={{color: 'white'}}>Send A Message</Button>}
               position="right center"
               modal
             >
