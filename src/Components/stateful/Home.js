@@ -16,25 +16,33 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.getRecord();
-    this.getFinishedEvents();
+    if(this.props.user.id){
+      this.getRecord();
+      this.getFinishedEvents();
+    }
+  }
+
+  componentDidUpdate = (prevProps, prevState) =>  {
+    if (prevProps.user.id !== this.props.user.id) {
+      this.getRecord();
+      this.getFinishedEvents();
+    }
   }
 
   getRecord = () => {
     const id = this.props.user.id;
     axios.get("/getRecord", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userWins: response.data.total_wins,
         userLosses: response.data.total_losses
       });
-    });
+    }).catch(error => {
+    })
   };
 
   getFinishedEvents = () => {
     const id = this.props.user.id;
     axios.get("/getFinishedEvents", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userEvents: response.data
       });
@@ -48,7 +56,6 @@ class Home extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="whole_app" id="home_container">
         <Header

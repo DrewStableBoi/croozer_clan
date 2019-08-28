@@ -72,11 +72,10 @@
 
 .login_button_wrap {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 100%;
   margin-top: 15px;
-  align-content: center;
+  /* align-content: center; */
   justify-content: space-around;
 }
 #login_button {
@@ -182,7 +181,7 @@ a {
   align-items: center;
   justify-content: space-between;
   color: white;
-  background-color: #334652;
+  background-color: #181e22;
   height: 55px;
   width: 100vw;
 }
@@ -203,7 +202,7 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background-color: #76828c;
+  background-color: #878686;
   overflow-x: auto;
   overflow-y: auto;
   height: 100%;
@@ -236,7 +235,7 @@ a {
 .home_info_right_containerMain {
   display: flex;
   flex-direction: row;
-  background-color: #457399;
+  background-color: #C7152E;
   height: 100%;
   width: 80vw;
 }
@@ -257,6 +256,7 @@ a {
   width: 90%;
   overflow: auto;
   overflow-x: auto;
+  background-color: #717275;
   box-shadow: 10px 15px 5px rgb(0, 0, 0);
   border: 4px solid grey;
   border-radius: 15px;
@@ -274,7 +274,7 @@ a {
 .home_info_right_containerLeft_sub1 {
   display: flex;
   flex-direction: row;
-  background-color: #76828c;
+  background-color: #717275;
   height: 250px;
   width: 90%;
   box-shadow: 10px 15px 5px rgb(0, 0, 0);
@@ -288,7 +288,7 @@ a {
   overflow: auto;
   height: 50%;
   width: 90%;
-  background-color: #76828c;
+  background-color: #717275;
   box-shadow: 10px 15px 5px rgb(0, 0, 0);
   border: 4px solid grey;
   border-radius: 15px;
@@ -345,46 +345,54 @@ a {
   margin: 10px;
   padding: 10px;
   width: 100%;
+  /* border: 3px solid black; */
 }
 .eventSearch {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   height: 30%;
-  width: 50%;
+  width: 100%;
   margin: 5px;
   padding: 5px;
+  /* border: 3px solid green; */
+
 }
 
 .eventCreate {
   display: flex;
   flex-direction: column;
-  /* border: solid 4px black; */
+  /* border: solid 3px blue; */
   align-items: flex-start;
   justify-content: space-evenly;
   height: 90%;
-  width: 50%;
+  width: 100%;
   margin: 5px;
   padding: 5px;
 }
 
+.event_scheduler-content {
+  width: 25% !important
+}
+
 .eventCreateAndDescribe {
   display: flex;
-  /* border: 4px solid black; */
+  flex-direction: column;
+  /* border: 4px solid red; */
   width: 100%;
   height: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .eventCreateSelectors {
-display: flex;
-flex-direction: column;
-justify-content: space-evenly;
-align-items: flex-start;
-/* border: 4px solid black; */
-height: 60%;
-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  /* border: 4px solid black; */
+  height: 60%;
+  width: 100%;
 }
 
 .eventDescription {
@@ -418,6 +426,10 @@ width: 100%;
   display: flex;
 }
 
+.containedPrimary {
+  color: #C7152E
+}
+
 .messageSubject {
   width: 50%;
   font-size: 20px;
@@ -431,6 +443,7 @@ width: 100%;
   margin: 10px;
   margin-left: 5px;
   padding: 10px;
+  overflow: auto;
   border-bottom: 4px solid rgb(18, 17, 19);
 }
 
@@ -475,14 +488,28 @@ width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* border: 4px solid blue; */
   height: 350px;
   overflow: auto;
 }
 
 .eventModal_innerContainer {
-display: flex;
-justify-content: space-around;
-border-bottom: 4px solid rgb(18, 17, 19);
-height: 50px;
-width: auto;
+  display: flex;
+  justify-content: space-evenly;
+  /* align-items: flex-start; */
+  border-bottom: 4px solid rgb(18, 17, 19);
+  /* border: 3px solid green; */
+  width: 100% !important;
+  height: 50px;
+  width: auto;
 }
+
+.individual_event_container {
+  display: flex; 
+  flex-direction: column;
+  /* border: 2px solid red; */
+  height: auto;
+  width: auto;
+}
+
+

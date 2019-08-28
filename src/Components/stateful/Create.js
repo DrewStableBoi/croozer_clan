@@ -102,8 +102,7 @@ class Create extends Component {
             }}
           />
           <div className="login_button_wrap">
-            <div className="login_button">
-              <Button variant="standard" color="primary" onClick={this.create}>
+              <Button variant="contained" color="primary" fullWidth onClick={this.create}>
                 Create Account
               </Button>
               <Button variant="standard" color="primary">
@@ -111,7 +110,6 @@ class Create extends Component {
                   Go Back Home
                 </Link>
               </Button>
-            </div>
           </div>
         </div>
       </div>

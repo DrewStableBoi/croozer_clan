@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../../App.css";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Popup from "reactjs-popup";
@@ -12,6 +10,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import moment from "moment";
+import eventSong from "../../video_and_sound_files/9BH.wav";
+import outcomeSong from "../../video_and_sound_files/9CH.wav";
 
 class EventSchedule extends Component {
   constructor() {
@@ -33,10 +33,10 @@ class EventSchedule extends Component {
     };
   }
 
-  componentDidMount() {
+
+  startUp = () => {
     const id = this.props.user.id;
     axios.get("/getEvents", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userEvents: response.data
       });
@@ -51,10 +51,21 @@ class EventSchedule extends Component {
     });
   }
 
+  componentDidMount() {
+    if (this.props.user.id) {
+      this.startUp();
+    }
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.user !== this.props.user) {
+      this.startUp();
+    }
+  };
+
   refreshEvents = () => {
     const id = this.props.user.id;
     axios.get("/getEvents", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userEvents: response.data
       });
@@ -82,8 +93,10 @@ class EventSchedule extends Component {
       event_arena: this.state.arenas,
       event_activity: this.state.activities
     };
+    const audio = new Audio(eventSong);
     try {
       await axios.post("/scheduleEvent", eventObject);
+      audio.play();
       alert(
         `Thanks, ${
           this.props.user.display_name
@@ -104,7 +117,6 @@ class EventSchedule extends Component {
       alert("Event Deleted!");
       close();
     } catch (err) {
-      console.log(err);
       alert("Something went wrong!");
     }
   };
@@ -112,7 +124,6 @@ class EventSchedule extends Component {
   refreshEvents = () => {
     const id = this.props.user.id;
     axios.get("/getEvents", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userEvents: response.data
       });
@@ -120,18 +131,21 @@ class EventSchedule extends Component {
   };
 
   setOutcomeWin = async (id, close) => {
+    const audio = new Audio(outcomeSong);
+    audio.play();
     try {
       await axios.post(`/eventWin/${id}`);
       this.refreshEvents();
       alert("Congratulations on the win!");
       close();
     } catch (err) {
-      console.log(err);
       alert("Something went wrong!");
     }
   };
 
   setOutcomeLoss = async (id, close) => {
+    const audio = new Audio(outcomeSong);
+    audio.play();
     try {
       await axios.post(`/eventLoss/${id}`);
       this.refreshEvents();
@@ -210,7 +224,7 @@ class EventSchedule extends Component {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          backgroundColor: "#76828c"
+          backgroundColor: "#717275"
         }}
       >
         <div className="messageTitle">
@@ -236,16 +250,18 @@ class EventSchedule extends Component {
               trigger={<Button color="default">Schedule Event</Button>}
               position="right center"
               modal
+              className="event_scheduler"
             >
               {close => (
                 <div
                   className="messageContainer"
-                  style={{ height: "500px", justifyContent: "space-around" }}
+                  style={{ height: "750px", width: 'auto', justifyContent: "space-around" }}
                 >
                   <h1
                     style={{
                       fontSize: "25px",
-                      textDecorationLine: "underline"
+                      textDecorationLine: "underline",
+                      alignSelf: 'center'
                     }}
                   >
                     Schedule an Event with a Friend!{" "}
@@ -255,21 +271,6 @@ class EventSchedule extends Component {
                       <h2 style={{ color: "grey", fontSize: "25px" }}>
                         Select Friend Here
                       </h2>
-                      <Button
-                        color="default"
-                        onClick={() => {
-                          const id = this.props.user.id;
-                          axios
-                            .get("/getUserFriends", { params: { id } })
-                            .then(response => {
-                              this.setState({
-                                userFriends: response.data
-                              });
-                            });
-                        }}
-                      >
-                        Friend Refresh
-                      </Button>
 
                       <FormControl style={{ width: "70%", textAlign: "left" }}>
                         <InputLabel>Friend List</InputLabel>
@@ -290,9 +291,27 @@ class EventSchedule extends Component {
                           })}
                         </Select>
                       </FormControl>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          const id = this.props.user.id;
+                          axios
+                            .get("/getUserFriends", { params: { id } })
+                            .then(response => {
+                              this.setState({
+                                userFriends: response.data
+                              });
+                            });
+                        }}
+                        style={{display: 'flex', alignSelf: 'flex-start', marginTop: '10px', backgroundColor: '#C7152E', color: 'white'}}
+                      >
+                      
+                        Friend Refresh
+                      </Button>
+
                     </div>
                     <div className="eventCreateAndDescribe">
-                      <div className="eventCreate" style={{ width: "70%" }}>
+                      <div className="eventCreate">
                         <h2 style={{ color: "grey", fontSize: "20px" }}>
                           Create Event Here - Try Something New!
                         </h2>
@@ -400,7 +419,7 @@ class EventSchedule extends Component {
                         <textarea
                           style={{
                             height: "60%",
-                            width: "100%",
+                            width: "95%",
                             fontSize: "15px"
                           }}
                           name="text"
@@ -418,10 +437,11 @@ class EventSchedule extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="messageButtons">
+                  <div className="messageButtons" style={{justifyContent: 'space-between', width: '100%', height: 'auto'}}>
                     <Button
                       size="small"
-                      color="default"
+                      style={{backgroundColor: '#C7152E', color: 'white'}}
+                      variant="contained"
                       onClick={() => this.scheduleEvent(close)}
                     >
                       Schedule Event

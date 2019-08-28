@@ -5,7 +5,6 @@ import Create from "./stateful/Create";
 import ForgotPassword from "./stateful/ForgotPass";
 import axios from "axios";
 import FirstTime from "./stateful/FirstTime";
-import materialLogin from "../Components/materialLogin";
 import "typeface-roboto";
 import {
   BrowserRouter as Router,
@@ -21,7 +20,6 @@ class App extends Component {
 
   componentDidMount() {
     axios.get("/user").then(response => {
-      console.log(response);
       this.setState({
         user: response.data
       });
@@ -35,7 +33,6 @@ class App extends Component {
   };
 
   render() {
-    console.log("this is app js", this.state);
     return (
       <div>
         <Router>
@@ -55,31 +52,49 @@ class App extends Component {
             />
 
             <Route component={Create} path="/signup" />
+
+            {/* <Route component={Home} path="/home" />
             <Route component={FirstTime} path="/firsttime" />
             <Route component={FirstTime} path="/changeAccount" />
-            <Route component={ForgotPassword} path = "/forgot" /> 
-            <Route component={materialLogin} path="/logintest" />
-
+            <Route component={ForgotPassword} path="/forgot" /> */}
 
             <Route
               render={props => {
                 const { user } = this.state;
-                // if (user.display_name) {
+                if (user.display_name) {
                   return (
-                    <Home 
+                    <Home
                       {...props}
                       user={this.state.user}
                       handleSetUser={this.handleSetUser}
                     />
                   );
-                // } else {
-                //   return <Redirect to="/firsttime" />;
-                // }
+                } else {
+                  return <Redirect to="/firsttime" />;
+                }
               }}
               path="/home"
             />
 
-            {/* <Route
+            <Route
+              render={props => {
+                const { user } = this.state;
+                if (user.display_name) {
+                  return (
+                    <FirstTime
+                      {...props}
+                      user={this.state.user}
+                      handleSetUser={this.handleSetUser}
+                    />
+                  );
+                } else {
+                  return <Redirect to="/firsttime" />;
+                }
+              }}
+              path="/changeAccount"
+            />
+
+            <Route
               render={props => {
                 const { user } = this.state;
                 if (!user.display_name && user.email) {
@@ -96,9 +111,9 @@ class App extends Component {
               }}
               exact
               path="/firsttime"
-            /> */}
+            />
 
-            {/* <Route
+            <Route
               render={props => {
                 return (
                   <ForgotPassword
@@ -110,7 +125,7 @@ class App extends Component {
               }}
               exact
               path="/forgot"
-            /> */}
+            />
           </Switch>
         </Router>
       </div>

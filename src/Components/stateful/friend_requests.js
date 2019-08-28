@@ -3,13 +3,13 @@ import axios from "axios";
 import "../../App.css";
 import moment from "moment";
 
-class FriendRequests extends React.Component {
+class FriendRequests extends Component {
   state = {
     friendRequests: [],
     mainUser: {}
   };
 
-  componentDidMount() {
+  startUp = () => {
     const id = this.props.user.id;
     axios.get("/getFriendRequests", { params: { id } }).then(response => {
       this.setState({
@@ -19,8 +19,20 @@ class FriendRequests extends React.Component {
     this.setState({
       mainUser: this.props.user
     });
+  };
+
+  componentDidMount() {
+    if (this.props.user.id) {
+      this.startUp();
+    }
   }
-  
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.user !== this.props.user) {
+      this.startUp();
+    }
+  };
+
   refreshRequests = () => {
     const id = this.props.user.id;
     axios.get("/getFriendRequests", { params: { id } }).then(response => {
@@ -28,26 +40,34 @@ class FriendRequests extends React.Component {
         friendRequests: response.data
       });
     });
-  }
+  };
 
-  approve = async (id) => {
+  approve = async id => {
     try {
       await axios.post(`/approve/${id}`);
       this.refreshRequests();
       alert("Friend Request Approved!");
     } catch (err) {
-      console.log(err);
       alert("Something went wrong!");
     }
   };
 
-  deny = async (id) => {
+  deny = async id => {
     try {
       await axios.post(`/deny/${id}`);
       this.refreshRequests();
       alert("Friend Request Denied!");
     } catch (err) {
-      console.log(err);
+      alert("Something went wrong!");
+    }
+  };
+
+  delete = async id => {
+    try {
+      await axios.delete(`/request/${id}`);
+      this.refreshRequests();
+      alert("Duplicate Request Deleted!");
+    } catch (err) {
       alert("Something went wrong!");
     }
   };
@@ -59,7 +79,7 @@ class FriendRequests extends React.Component {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          backgroundColor: "#76828c"
+          backgroundColor: "#717275"
         }}
       >
         <div className="messageTitle">
@@ -83,12 +103,15 @@ class FriendRequests extends React.Component {
           this.state.friendRequests.map(index => {
             return (
               <div>
-                <div className="messageCentral_container" style={{justifyContent: 'space-around'}}>
+                <div
+                  className="messageCentral_container"
+                  style={{ justifyContent: "space-around" }}
+                >
                   <div className="messageCentral_subject">
-                    {index.user_display} ({index.requester_full_name})
+                    {index.requester_display} ({index.requester_full_name})
                   </div>
                   <div className="messageCentral_body">
-                  Wants to be your friend!
+                    Wants to be your friend!
                   </div>
                   <div className="messageCentral_from">
                     <div className="messageCentral_from_time">
@@ -123,6 +146,13 @@ class FriendRequests extends React.Component {
                       }}
                     >
                       Deny
+                    </button>
+                    <button
+                      onClick={() => {
+                        this.delete(index.request_id);
+                      }}
+                    >
+                      Delete Duplicate Request
                     </button>
                   </div>
                 </div>

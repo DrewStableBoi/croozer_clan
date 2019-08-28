@@ -12,6 +12,7 @@ import axios from "axios";
 import Popup from "reactjs-popup";
 import "../../App.css";
 import moment from "../../../node_modules/moment";
+import logo from "../../video_and_sound_files/Croozer logo.svg";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,17 +38,12 @@ export default function Header(props) {
     setAnchorEl(null);
   }
 
-  function redirectFirst() {
-    return alert("Coming soon");
-  }
-
   const logout = async () => {
     try {
       await axios.post("/logout");
       alert(`You've successfully been logged out!`);
       props.history.push("/");
     } catch (error) {
-      console.log(error);
       alert("Something went wrong!");
     }
   };
@@ -60,9 +56,13 @@ export default function Header(props) {
     }
   };
 
+  const renderRedirect = () => {
+    props.history.push("/changeAccount");
+  };
+
   return (
     <div className="header_container">
-      <AppBar style={{ backgroundColor: "#334652" }}>
+      <AppBar style={{ backgroundColor: '#717275', height: '70px' }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -100,50 +100,61 @@ export default function Header(props) {
                   </h1>
                   {props.events.map(event => {
                     return (
-                      <div className="eventModal_innerContainer">
-                        <div>
-                          <h1>Challenger:</h1>
-                          {event.challenger_full_name}
-                        </div>
-                        <div>
-                          <h1>Accepter:</h1>
-                          {event.accepter_full_name}
-                        </div>
-                        <div>
-                          <h1>Event Description:</h1>
-                          {event.event_activity}
-                        </div>
-                        <div>
-                          <h1>Time of Event:</h1>
-                          {moment(event.day_of_event).format("MMMM Do YYYY")}
-                        </div>
-                        <div>
-                          <h1>Who Won?</h1>
-                          {whoWon(event)}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          margin: "10px"
+                        }}
+                      >
+                        <div className="eventModal_innerContainer">
+                          <div className="individual_event_container">
+                            <h1>Challenger:</h1>
+                            {event.challenger_full_name}
+                          </div>
+                          <div className="individual_event_container">
+                            <h1>Accepter:</h1>
+                            {event.accepter_full_name}
+                          </div>
+                          <div className="individual_event_container">
+                            <h1>Event Description:</h1>
+                            {event.event_activity}
+                          </div>
+                          <div className="individual_event_container">
+                            <h1>Time of Event:</h1>
+                            {moment(event.day_of_event).format("MMMM Do YYYY")}
+                          </div>
+                          <div className="individual_event_container">
+                            <h1>Who Won?</h1>
+                            {whoWon(event)}
+                          </div>
                         </div>
                       </div>
                     );
                   })}
-                  <Button size="small" color="default" variant="outlined" style={{width: '20%'}} onClick={() => {close();}}>
+                  <Button
+                    size="small"
+                    color="default"
+                    style={{backgroundColor: '#C7152E', color: 'white', width: '20%'}}
+                    onClick={() => {
+                      close();
+                    }}
+                  >
                     Go Back
                   </Button>
                 </div>
               )}
             </Popup>
 
-            <MenuItem onClick={handleClose}>Change Account Settings</MenuItem>
+            <MenuItem onClick={renderRedirect}>
+              Change Account Settings
+            </MenuItem>
           </Menu>
+          <img src={logo} width='300px' height='70px'></img>
           <Typography
             variant="h6"
             className={classes.title}
-            style={{ display: "flex" }}
-          >
-            Welcome to Croozer!
-          </Typography>
-          <Typography
-            variant="h6"
-            className={classes.title}
-            style={{ display: "flex" }}
+            style={{ display: "flex", margin: '30px' }}
           >
             Current Record: {props.wins} Wins // {props.losses} Losses
           </Typography>

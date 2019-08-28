@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../../App.css";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Popup from "reactjs-popup";
 import moment from "../../../node_modules/moment";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+
 
 class MessageCentral extends Component {
   constructor() {
@@ -19,24 +21,42 @@ class MessageCentral extends Component {
       responseMessage: "",
       newSubject: "",
       newMessage: "",
-      userList: []
+      userList: [],
+      userFriends: [],
+      selectedFriendId: ""
     };
   }
 
-  componentDidMount() {
+  startUp = () => {
     const id = this.props.user.id;
     axios.get("/getMessages", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userMessages: response.data
       });
     });
+    axios.get("/getUserFriends", { params: { id } }).then(response => {
+      this.setState({
+        userFriends: response.data
+      });
+    });
+    this.setState({
+      mainUser: this.props.user
+    });
+  };
+
+  componentDidMount() {
+    this.startUp();
   }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.user !== this.props.user) {
+      this.startUp();
+    }
+  };
 
   refreshMessages = () => {
     const id = this.props.user.id;
     axios.get("/getMessages", { params: { id } }).then(response => {
-      console.log(response);
       this.setState({
         userMessages: response.data
       });
@@ -53,9 +73,26 @@ class MessageCentral extends Component {
     try {
       await axios.post("/sendMessage", messageObject);
       alert(
-        `Thanks, ${
-          this.props.user.display_name
-        }! You've just sent your message. They'll get back to you, soon!`
+        `Thanks, ${this.props.user.display_name}! You've just sent your message. They'll get back to you, soon!`
+      );
+      close();
+      this.props.history.push("/home");
+    } catch (error) {
+      alert("Something went wrong!");
+    }
+  };
+
+  sendMessageTwo = async (close) => {
+    const messageObject = {
+      messageSubject: this.state.responseSubject,
+      userMessage: this.state.responseMessage,
+      recipientId: this.state.selectedFriendId,
+      senderId: this.props.user.id
+    };
+    try {
+      await axios.post("/sendMessage", messageObject);
+      alert(
+        `Thanks, ${this.props.user.display_name}! You've just sent your message. They'll get back to you, soon!`
       );
       close();
       this.props.history.push("/home");
@@ -90,7 +127,7 @@ class MessageCentral extends Component {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          backgroundColor: "#76828c"
+          backgroundColor: "#717275"
         }}
       >
         <div className="messageTitle">
@@ -116,7 +153,7 @@ class MessageCentral extends Component {
               Refresh Messages
             </Button>
 
-            {/* <Popup
+            <Popup
               trigger={<Button color="default">Send A Message</Button>}
               position="right center"
               modal
@@ -129,8 +166,27 @@ class MessageCentral extends Component {
                       textDecorationLine: "underline"
                     }}
                   >
-                    Find a User, Send a Message!
+                    Find a Friend, Send them a Message!
                   </h1>
+                  <FormControl style={{ width: "30%", textAlign: "left" }}>
+                    <InputLabel>Friend List</InputLabel>
+                    <Select
+                      value={this.state.selectedFriendId}
+                      onChange={event => {
+                        this.setState({
+                          selectedFriendId: event.target.value
+                        });
+                      }}
+                    >
+                      {this.state.userFriends.map(friend => {
+                        return (
+                          <MenuItem value={friend.requester_id}>
+                            {friend.requester_display}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
                   <h2 style={{ color: "grey" }}>Subject</h2>
                   <textarea
                     className="messageSubject"
@@ -164,8 +220,8 @@ class MessageCentral extends Component {
                   <div className="messageButtons">
                     <Button
                       size="small"
-                      color="default"
-                      onClick={() => this.sendMessage(index.sender_id, close)}
+                      onClick={() => this.sendMessageTwo(close)}
+                      style={{backgroundColor: '#C7152E', color: 'white'}}
                     >
                       Send Message
                     </Button>
@@ -179,7 +235,7 @@ class MessageCentral extends Component {
                   </div>
                 </div>
               )}
-            </Popup> */}
+            </Popup>
           </div>
         </div>
         {this.state.userMessages.length === 0 ? (
@@ -293,7 +349,7 @@ class MessageCentral extends Component {
                             <Button
                               size="small"
                               color="default"
-                              onClick={() => this.clearMessage}
+                              onClick={() => this.clearMessage()}
                             >
                               Clear Message
                             </Button>

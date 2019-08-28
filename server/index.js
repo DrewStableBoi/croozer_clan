@@ -44,6 +44,7 @@ app.post("/addFriend", controller.addFriend);
 app.get("/getMessages", controller.getMessages)
 app.delete("/message/:id", controller.deleteMessage);
 app.delete("/event/:id", controller.deleteEvent)
+app.delete("/request/:id", controller.deleteFriendRequest)
 app.get("/getEvents", controller.getEvents);
 app.get("/getFinishedEvents", controller.getFinishedEvents);
 app.post("/scheduleEvent", controller.scheduleEvent);

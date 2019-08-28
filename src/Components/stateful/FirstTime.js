@@ -35,9 +35,9 @@ class FirstTime extends Component {
       alert(
         `Thanks, ${
           this.state.displayName
-        }! You've just customized your account!`
+        }! You've just customized your account! Please sign in again.`
       );
-      this.props.history.push("/home");
+      this.props.history.push("/");
     } catch (error) {
       alert("Something went wrong!");
     }

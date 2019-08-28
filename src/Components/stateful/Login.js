@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import video from "../../video_and_sound_files/croozer_rap.mp4";
 import loginSong from "../../video_and_sound_files/A1H.wav";
+import logo from "../../video_and_sound_files/Croozer logo.svg";
 
 class Login extends Component {
   constructor() {
@@ -24,11 +25,13 @@ class Login extends Component {
         email: this.state.email,
         password: this.state.password
       };
+      const audio = new Audio(loginSong);
       let user = await axios.post("/login", body).then(res => {
         return res.data;
       });
 
       this.setState({ login: true });
+      audio.play();
       alert(`Welcome back, ${this.state.email}!`);
       this.props.handleSetUser(user);
       this.props.history.push("/home");
@@ -42,8 +45,6 @@ class Login extends Component {
 
   render() {
 
-    var audio = new Audio(loginSong);
-
     return (
       <div className="whole_app">
         <video
@@ -56,7 +57,7 @@ class Login extends Component {
           <source src={video} />
         </video>
         <div className="login_box">
-          <h1>Croozer Sign In</h1>
+          <img src={logo} width='325px'></img>
           <TextField
             className="login_text"
             variant="outlined"
@@ -89,19 +90,23 @@ class Login extends Component {
             }}
           />
           <div className="login_button_wrap">
-            <Button color="default" onClick={this.signIn}>
+            <div style={{width: '100%'}}>
+            <Button style={{backgroundColor: '#C7152E', color: 'white'}} variant="contained" fullWidth onClick={this.signIn}>
               Sign In
             </Button>
-            <Button color="default">
+            </div>
+            <div style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
+            <Button color="default" style={{display: 'flex'}}>
               <Link style={{ color: "black" }} to="/forgot">
                 Forgot Password?
               </Link>
             </Button>
-            <Button color="default" id="login_button">
+            <Button color="default" style={{display: 'flex'}}>
               <Link style={{ color: "black" }} to="/signup">
                 Create New Account
               </Link>
             </Button>
+            </div>
           </div>
           <h2
             style={{

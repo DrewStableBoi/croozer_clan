@@ -110,7 +110,7 @@ class ForgotPass extends Component {
             }}
           />
           <div className="login_button_wrap">
-            <Button variant="standard" color="primary" onClick={this.reset}>
+            <Button style={{backgroundColor: '#C7152E', color: 'white'}} variant="contained" fullWidth onClick={this.reset}>
               Reset Password
             </Button>
             <Button variant="standard" color="primary">

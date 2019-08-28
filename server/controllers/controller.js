@@ -389,7 +389,7 @@ module.exports = {
     const db = req.app.get("db");
     const id = req.query.id;
     const query = `SELECT DISTINCT requester_id, friend_id, requester_email, 
-    friend_email, requester_display, friend_display, time_of_addition FROM
+    friend_email, requester_display, friend_display FROM
     users_friend WHERE friend_id = ${id} AND request_approved IS TRUE;`;
     console.log(query);
     db.query(query)
@@ -411,6 +411,21 @@ module.exports = {
     JOIN users u ON users_friend.requester_id = u.id 
     WHERE friend_id = ${id} AND request_approved IS FALSE AND request_denied = FALSE;`;
     console.log(query);
+    db.query(query)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
+
+  deleteFriendRequest: (req, res) => {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    const query = `DELETE FROM users_friend WHERE request_id = ${id}`
+    console.log(query)
     db.query(query)
       .then(result => {
         res.status(200).send(result);
