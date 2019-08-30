@@ -57,7 +57,7 @@ class Login extends Component {
           <source src={video} />
         </video>
         <div className="login_box">
-          <img src={logo} width='325px'></img>
+          <img src={logo} width='325px' alt=""></img>
           <TextField
             className="login_text"
             variant="outlined"

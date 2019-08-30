@@ -372,7 +372,9 @@ a {
 }
 
 .event_scheduler-content {
-  width: 25% !important
+  width: 25% !important;
+  height: 80vh !important;
+  overflow: auto;
 }
 
 .eventCreateAndDescribe {

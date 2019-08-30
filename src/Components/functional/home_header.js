@@ -150,7 +150,7 @@ export default function Header(props) {
               Change Account Settings
             </MenuItem>
           </Menu>
-          <img src={logo} width='300px' height='70px'></img>
+          <img src={logo} width='300px' height='70px' alt=""></img>
           <Typography
             variant="h6"
             className={classes.title}
