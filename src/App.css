@@ -377,6 +377,11 @@ a {
   overflow: auto;
 }
 
+.MuiSelect-select {
+  align-self: flex-start !important;
+  min-width: 150px !important;
+}
+
 .eventCreateAndDescribe {
   display: flex;
   flex-direction: column;
@@ -446,6 +451,7 @@ a {
   margin-left: 5px;
   padding: 10px;
   overflow: auto;
+  overflow-x: auto;
   border-bottom: 4px solid rgb(18, 17, 19);
 }
 

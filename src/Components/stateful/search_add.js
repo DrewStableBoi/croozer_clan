@@ -3,9 +3,14 @@ import axios from "axios";
 import "../../App.css";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Popup from "reactjs-popup";
+
 
 class SearchAdd extends Component {
   constructor() {
@@ -15,6 +20,8 @@ class SearchAdd extends Component {
       mainUser: {},
       type: "",
       name: "",
+      searchTarget: "",
+      newLoaderDisable: true,
       returnedUsers: [],
       categoryChecked: false,
       arenaChecked: false,
@@ -32,6 +39,7 @@ class SearchAdd extends Component {
     this.setState({
       type: "",
       name: "",
+      searchTarget: "",
       returnedUsers: [],
       categoryChecked: false,
       arenaChecked: false,
@@ -45,7 +53,6 @@ class SearchAdd extends Component {
     });
   };
 
-
   componentDidMount() {
     this.startUp();
   }
@@ -54,19 +61,16 @@ class SearchAdd extends Component {
     this.setState({
       mainUser: this.props.user
     });
-  }
+  };
 
   searchUsers = () => {
-    const type = this.state.type;
-    const name = this.state.name;
+    const item = this.state.searchTarget;
     const userId = this.state.mainUser.id;
-    if (!type) {
-      return alert("Please enter the search parameters and try again!");
-    } else if (!name) {
+    if (!item) {
       return alert("Please enter the search parameters and try again!");
     } else {
       axios
-        .get("/search", { params: { type, name, userId } })
+        .get("/search", { params: { item, userId } })
         .then(users => {
           this.setState({ returnedUsers: users.data, searched: true });
         })
@@ -109,9 +113,7 @@ class SearchAdd extends Component {
     try {
       await axios.post("/sendMessage", messageObject);
       alert(
-        `Thanks, ${
-          this.props.user.display_name
-        }! You've just sent your message. They'll get back to you, soon!`
+        `Thanks, ${this.props.user.display_name}! You've just sent your message. They'll get back to you, soon!`
       );
       close();
       this.resetState();
@@ -129,8 +131,68 @@ class SearchAdd extends Component {
   };
 
   render() {
+    const categories = [
+      "Video Games",
+      "Sports",
+      "TV/Movie Binge-Watching",
+      "Board Games"
+    ];
+
+    const arenas = [
+      "Playstation 4",
+      "Xbox One",
+      "Nintendo Switch",
+      "PC Gaming",
+      "Basketball",
+      "Baseball",
+      "Netflix",
+      "Hulu",
+      "Game Store",
+      "Casual/At Home"
+    ];
+
+    const activities = [
+      "Call of Duty - PS4",
+      "Street Fighter 5",
+      "Final Fantasy XV - PS4",
+      "Call of Duty - Xbox One",
+      "Apex Legends",
+      "Final Fantasy XV - Xbox Obne",
+      "Mario Party 10",
+      "Super Smash Brothers: Ultimate",
+      "Xenoblade Chronicles 2",
+      "Pokemon Sword",
+      "Call of Duty - PC",
+      "Street Fighter 5",
+      "Final Fantasy XV - PC",
+      "Starcraft 2",
+      "One on One",
+      "Two on Two",
+      "Three on Three",
+      "Four on Four",
+      "Five on Five",
+      "Home Run Derby",
+      "Friendly Scrimmage",
+      "Batting Cages",
+      "Playing Catch",
+      "The Office",
+      "Stranger Things",
+      "Brooklyn Nine-Nine",
+      "1969 - James Franco Show",
+      "D&D 5th Edition",
+      "Magic: The Gathering",
+      "Board Game Placeholder"
+    ];
+
     return (
-      <div style={{ display: "flex", flexDirection: "row", width: "100%", alignItems: 'center' }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          alignItems: "center"
+        }}
+      >
         <div className="search_container">
           <h1
             style={{
@@ -141,21 +203,7 @@ class SearchAdd extends Component {
           >
             Search Users for a Challenge!
           </h1>
-          <div className="searchBar_container">
-            <TextField
-              className="login_text"
-              variant="standard"
-              margin="dense"
-              required
-              fullWidth
-              label="Search Here"
-              value={this.state.name}
-              autoFocus
-              onChange={event => {
-                this.setState({ name: event.target.value });
-              }}
-            />
-          </div>
+
           <div className="checkbox_container">
             <FormControlLabel
               control={
@@ -167,6 +215,7 @@ class SearchAdd extends Component {
                     this.setState({
                       type: "activities_first",
                       categoryChecked: !this.state.categoryChecked,
+                      newLoaderDisable: false,
                       arenaDisabled: true,
                       activityDisabled: true
                     });
@@ -185,6 +234,7 @@ class SearchAdd extends Component {
                     this.setState({
                       type: "activities_second",
                       arenaChecked: !this.state.arenaChecked,
+                      newLoaderDisable: false,
                       categoryDisabled: true,
                       activityDisabled: true
                     });
@@ -203,6 +253,7 @@ class SearchAdd extends Component {
                     this.setState({
                       type: "activities_third",
                       activityChecked: !this.state.activityChecked,
+                      newLoaderDisable: false,
                       categoryDisabled: true,
                       arenaDisabled: true
                     });
@@ -211,21 +262,56 @@ class SearchAdd extends Component {
               }
               label="by Activity"
             />
+            <div style={{display: 'flex'}}>
+              <FormControl disabled={this.state.newLoaderDisable} >
+                <InputLabel >Select Only One Item</InputLabel>
+                <Select
+                  fullWidth
+                  margin="dense"
+                  value={this.state.searchTarget}
+                  onChange={event => {
+                    this.setState({ searchTarget: event.target.value });
+                  }}
+                  input={<Input id="select-multiple-checkbox" />}
+                  className="create_text"
+                >
+                  {this.state.categoryChecked
+                    ? categories.map(category => {
+                        return <MenuItem value={category}>{category}</MenuItem>;
+                      })
+                    : this.state.arenaChecked
+                    ? arenas.map(arena => {
+                        return <MenuItem value={arena}>{arena}</MenuItem>;
+                      })
+                    : activities.map(activity => {
+                        return <MenuItem value={activity}>{activity}</MenuItem>;
+                      })}
+                </Select>
+              </FormControl>
+            </div>
           </div>
           <div className="searchButton_container">
-            <Button color="default" onClick={this.searchUsers} style={{color: 'white'}}>
+            <Button
+              color="default"
+              onClick={this.searchUsers}
+              style={{ color: "white" }}
+            >
               Search
             </Button>
-            <Button color="default" onClick={this.resetState} style={{color: 'white'}}>
+            <Button
+              color="default"
+              onClick={this.resetState}
+              style={{ color: "white" }}
+            >
               Clear Search
             </Button>
           </div>
         </div>
-        <div className="searchResults_container">
+        <div className="searchResults_container" style={{border: '2px solid black', borderRadius: '15px'}}>
           {this.state.returnedUsers.length === 0 ? (
             <h1 style={{ fontSize: "18px" }}>
-              Nothing here yet - Remember that the search parameters are
-              case-sensitive! Also remember that you're searching for users based on their activity preferences!
+              Nothing here yet - Also remember that you're searching for users
+              based on their activity preferences!
             </h1>
           ) : (
             this.state.returnedUsers.map(person => {

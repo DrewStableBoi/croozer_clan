@@ -103,8 +103,8 @@ module.exports = {
 
   Search: (req, res) => {
     const db = req.app.get("db");
-    const { type, name, userId } = req.query; // whatever they typed in
-    const query = `SELECT id, email, display_name, first_name||' '||last_name as full_name, display_name FROM "users" WHERE users."${type}" @> ARRAY['${name}'] AND id <> ${userId}`;
+    const { item, userId } = req.query; // whatever they typed in
+    const query = `SELECT id, email, display_name, first_name||' '||last_name as full_name, display_name FROM "users" WHERE (users.activities_first @> ARRAY['${item}'] OR users.activities_second @> ARRAY['${item}'] OR users.activities_third @> ARRAY['${item}']) AND id <> ${userId}`;
     console.log(query);
     db.query(query)
       .then(users => {
