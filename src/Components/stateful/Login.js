@@ -34,7 +34,7 @@ class Login extends Component {
       audio.play();
       alert(`Welcome back, ${this.state.email}!`); 
       this.props.handleSetUser(user);
-      this.props.history.push("/home");
+      this.props.history.push("/app/home");
     } catch (error) {
       alert(
         "Something went wrong. Either the account doesn't exist or you entered in the credentials the wrong way. Try again!"

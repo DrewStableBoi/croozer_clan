@@ -35,7 +35,7 @@ class ForgotPass extends Component {
         return alert("Please enter valid credentials");
       }
       await axios.put("/resetpass", body);
-      alert(`Your password has successfully been changed!`);
+      alert(`Your password has successfully been changed! Please log in again!`);
       this.props.history.push("/");
     } catch (error) {
       alert("Error! You may not already have an account created!");

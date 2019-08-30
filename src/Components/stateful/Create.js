@@ -37,8 +37,8 @@ class Create extends Component {
       }
       await axios.post("/signup", body);
       this.setState({ created: true });
-      alert("Account created successfully!");
-      this.props.history.push("/firsttime");
+      alert("Account created successfully! Please sign in again!");
+      this.props.history.push("app/firsttime");
     } catch (error) {
       alert("Error, please try again");
     }
@@ -102,7 +102,7 @@ class Create extends Component {
             }}
           />
           <div className="login_button_wrap">
-              <Button variant="contained" color="primary" fullWidth onClick={this.create}>
+              <Button style={{backgroundColor: '#C7152E', color: 'white'}} variant="contained" color="primary" fullWidth onClick={this.create}>
                 Create Account
               </Button>
               <Button variant="standard" color="primary">

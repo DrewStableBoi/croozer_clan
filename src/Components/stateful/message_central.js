@@ -76,7 +76,7 @@ class MessageCentral extends Component {
         `Thanks, ${this.props.user.display_name}! You've just sent your message. They'll get back to you, soon!`
       );
       close();
-      this.props.history.push("/home");
+      this.props.history.push("/app/home");
     } catch (error) {
       alert("Something went wrong!");
     }
@@ -95,7 +95,7 @@ class MessageCentral extends Component {
         `Thanks, ${this.props.user.display_name}! You've just sent your message. They'll get back to you, soon!`
       );
       close();
-      this.props.history.push("/home");
+      this.props.history.push("/app/home");
     } catch (error) {
       alert("Something went wrong!");
     }
@@ -113,7 +113,7 @@ class MessageCentral extends Component {
       await axios.delete(`/message/${id}`);
       this.refreshMessages();
       alert("Message Deleted!");
-      this.props.history.push("/home");
+      this.props.history.push("/app/home");
       close();
     } catch (err) {
       alert("Something went wrong!");
@@ -180,8 +180,8 @@ class MessageCentral extends Component {
                     >
                       {this.state.userFriends.map(friend => {
                         return (
-                          <MenuItem value={friend.requester_id}>
-                            {friend.requester_display}
+                          <MenuItem value={friend.app_friend_id}>
+                            {friend.app_friend_display}
                           </MenuItem>
                         );
                       })}

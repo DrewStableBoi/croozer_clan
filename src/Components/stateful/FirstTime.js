@@ -239,7 +239,7 @@ class FirstTime extends Component {
             }}
           />
           <FormControl>
-            <InputLabel>What's Your Competitive Category?</InputLabel>
+            <InputLabel>What Are Your Competitive Categories?</InputLabel>
             <Select
               multiple
               fullWidth
@@ -259,7 +259,7 @@ class FirstTime extends Component {
             </Select>
           </FormControl>
           <FormControl disabled={this.state.first_toggle}>
-            <InputLabel> What Arena Are You In?</InputLabel>
+            <InputLabel> What Arenas Are You In?</InputLabel>
             <Select
               multiple
               fullWidth

@@ -57,7 +57,7 @@ export default function Header(props) {
   };
 
   const renderRedirect = () => {
-    props.history.push("/changeAccount");
+    props.history.push("/app/changeAccount");
   };
 
   return (

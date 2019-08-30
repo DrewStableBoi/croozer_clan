@@ -102,10 +102,10 @@ module.exports = {
   },
 
   Search: (req, res) => {
-    console.log(req.query);
     const db = req.app.get("db");
-    const { type, name } = req.query; // whatever they typed in
-    const query = `SELECT id, email, display_name, first_name||' '||last_name as full_name, display_name FROM "users" WHERE users."${type}" @> ARRAY['${name}']`;
+    const { type, name, userId } = req.query; // whatever they typed in
+    const query = `SELECT id, email, display_name, first_name||' '||last_name as full_name, display_name FROM "users" WHERE users."${type}" @> ARRAY['${name}'] AND id <> ${userId}`;
+    console.log(query);
     db.query(query)
       .then(users => {
         res.status(200).send(users);
@@ -388,9 +388,18 @@ module.exports = {
   getUserFriends: (req, res) => {
     const db = req.app.get("db");
     const id = req.query.id;
-    const query = `SELECT DISTINCT requester_id, friend_id, requester_email, 
-    friend_email, requester_display, friend_display FROM
-    users_friend WHERE friend_id = ${id} AND request_approved IS TRUE;`;
+    const query = `WITH friend_search AS
+    (
+    SELECT DISTINCT 
+    CASE WHEN requester_id = ${id} AND request_approved IS TRUE THEN friend_display
+    WHEN friend_id = ${id} AND request_approved IS TRUE THEN requester_display ELSE NULL END as app_friend_display,
+    CASE WHEN requester_id = ${id} AND request_approved IS TRUE THEN friend_id
+    WHEN friend_id = ${id} AND request_approved IS TRUE THEN requester_id ELSE NULL END as app_friend_id
+    FROM users_friend
+    )
+    SELECT * FROM friend_search
+    WHERE app_friend_display IS NOT NULL;
+    `;
     console.log(query);
     db.query(query)
       .then(result => {

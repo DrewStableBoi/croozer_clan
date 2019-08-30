@@ -12,6 +12,7 @@ class SearchAdd extends Component {
     super();
 
     this.state = {
+      mainUser: {},
       type: "",
       name: "",
       returnedUsers: [],
@@ -44,16 +45,28 @@ class SearchAdd extends Component {
     });
   };
 
+
+  componentDidMount() {
+    this.startUp();
+  }
+
+  startUp = () => {
+    this.setState({
+      mainUser: this.props.user
+    });
+  }
+
   searchUsers = () => {
     const type = this.state.type;
     const name = this.state.name;
+    const userId = this.state.mainUser.id;
     if (!type) {
       return alert("Please enter the search parameters and try again!");
     } else if (!name) {
       return alert("Please enter the search parameters and try again!");
     } else {
       axios
-        .get("/search", { params: { type, name } })
+        .get("/search", { params: { type, name, userId } })
         .then(users => {
           this.setState({ returnedUsers: users.data, searched: true });
         })
@@ -76,7 +89,6 @@ class SearchAdd extends Component {
       .post("/addFriend", addFriendBody)
       .then(result => {
         alert("Your request has been sent, but they must approve it first!");
-        console.log(result);
         this.resetState();
         close();
       })
@@ -84,7 +96,7 @@ class SearchAdd extends Component {
         alert("Oops! Something went wrong!");
         console.log(err);
       });
-    this.props.history.push("/home");
+    this.props.history.push("/app/home");
   };
 
   sendMessage = async (id, close) => {
@@ -102,7 +114,8 @@ class SearchAdd extends Component {
         }! You've just sent your message. They'll get back to you, soon!`
       );
       close();
-      this.props.history.push("/home");
+      this.resetState();
+      this.props.history.push("/app/home");
     } catch (error) {
       alert("Something went wrong!");
     }

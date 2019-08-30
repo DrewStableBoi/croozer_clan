@@ -6,25 +6,84 @@ import ForgotPassword from "./stateful/ForgotPass";
 import axios from "axios";
 import FirstTime from "./stateful/FirstTime";
 import "typeface-roboto";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
-class App extends Component {
+class AuthenticatedRoutes extends Component {
   state = {
-    user: {}
+    user: null
   };
 
   componentDidMount() {
-    axios.get("/user").then(response => {
-      this.setState({
-        user: response.data
-      });
-    });
+    axios
+      .get("/user")
+      .then(response => {
+        this.setState({
+          user: response.data
+        });
+      })
+      .catch(err => this.props.history.push("/"));
   }
+
+  render() {
+    if (!this.state.user) return null;
+    return (
+      <div>
+        <Route
+          path="/app/home"
+          render={props => {
+            const { user } = this.state;
+            if (user.display_name) {
+              return (
+                <Home
+                  {...props}
+                  user={this.state.user}
+                  handleSetUser={this.handleSetUser}
+                />
+              );
+            } else {
+              return <Redirect to="/app/firsttime" />;
+            }
+          }}
+          exact
+        />
+        )} />
+        <Route
+          path="/app/changeAccount"
+          render={props => (
+            <FirstTime
+              {...props}
+              user={this.state.user}
+              handleSetUser={this.handleSetUser}
+            />
+          )}
+        />
+        <Route
+          path="/app/firsttime"
+          render={props => {
+            const { user } = this.state;
+            if (!user.display_name && user.email) {
+              return (
+                <FirstTime
+                  {...props}
+                  user={this.state.user}
+                  handleSetUser={this.handleSetUser}
+                />
+              );
+            } else {
+              return <Redirect to="/" />;
+            }
+          }}
+          exact
+        />
+      </div>
+    );
+  }
+}
+
+class App extends Component {
+  state = {
+    user: null
+  };
 
   handleSetUser = user => {
     this.setState({
@@ -35,102 +94,41 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Router>
-          <Switch>
-            <Route
-              render={props => {
-                return (
-                  <Login
-                    {...props}
-                    user={this.state.user}
-                    handleSetUser={this.handleSetUser}
-                  />
-                );
-              }}
-              exact
-              path="/"
-            />
+        <Switch>
+          <Route
+            render={props => {
+              return (
+                <Login
+                  {...props}
+                  user={this.state.user}
+                  handleSetUser={this.handleSetUser}
+                />
+              );
+            }}
+            exact
+            path="/"
+          />
 
-            <Route component={Create} path="/signup" />
+          <Route component={Create} path="/signup" />
 
-            {/* <Route component={Home} path="/home" />
-            <Route component={FirstTime} path="/firsttime" />
-            <Route component={FirstTime} path="/changeAccount" />
-            <Route component={ForgotPassword} path="/forgot" /> */}
-
-            <Route
-              render={props => {
-                const { user } = this.state;
-                if (user.display_name) {
-                  return (
-                    <Home
-                      {...props}
-                      user={this.state.user}
-                      handleSetUser={this.handleSetUser}
-                    />
-                  );
-                } else {
-                  return <Redirect to="/firsttime" />;
-                }
-              }}
-              path="/home"
-            />
-
-            <Route
-              render={props => {
-                const { user } = this.state;
-                if (user.display_name) {
-                  return (
-                    <FirstTime
-                      {...props}
-                      user={this.state.user}
-                      handleSetUser={this.handleSetUser}
-                    />
-                  );
-                } else {
-                  return <Redirect to="/firsttime" />;
-                }
-              }}
-              path="/changeAccount"
-            />
-
-            <Route
-              render={props => {
-                const { user } = this.state;
-                if (!user.display_name && user.email) {
-                  return (
-                    <FirstTime
-                      {...props}
-                      user={this.state.user}
-                      handleSetUser={this.handleSetUser}
-                    />
-                  );
-                } else {
-                  return <Redirect to="/" />;
-                }
-              }}
-              exact
-              path="/firsttime"
-            />
-
-            <Route
-              render={props => {
-                return (
-                  <ForgotPassword
-                    {...props}
-                    user={this.state.user}
-                    handleSetUser={this.handleSetUser}
-                  />
-                );
-              }}
-              exact
-              path="/forgot"
-            />
-          </Switch>
-        </Router>
+          <Route
+            render={props => {
+              return (
+                <ForgotPassword
+                  {...props}
+                  user={this.state.user}
+                  handleSetUser={this.handleSetUser}
+                />
+              );
+            }}
+            exact
+            path="/forgot"
+          />
+          <Route path="/app" component={AuthenticatedRoutes} />
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

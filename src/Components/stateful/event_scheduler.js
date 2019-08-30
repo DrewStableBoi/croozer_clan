@@ -104,7 +104,7 @@ class EventSchedule extends Component {
       );
       this.refreshEvents();
       close();
-      this.props.history.push("/home");
+      this.props.history.push("/app/home");
     } catch (error) {
       alert("Something went wrong!");
     }
@@ -284,8 +284,8 @@ class EventSchedule extends Component {
                         >
                           {this.state.userFriends.map(friend => {
                             return (
-                              <MenuItem value={friend.requester_id}>
-                                {friend.requester_display}
+                              <MenuItem value={friend.app_friend_id}>
+                                {friend.app_friend_display}
                               </MenuItem>
                             );
                           })}
