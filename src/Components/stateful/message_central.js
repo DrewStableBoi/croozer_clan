@@ -364,6 +364,7 @@ class MessageCentral extends Component {
                             <Button
                               size="small"
                               color="default"
+                              style={{ backgroundColor: "#C7152E", color: "white" }}
                               onClick={() =>
                                 this.sendMessage(index.sender_id, close)
                               }
