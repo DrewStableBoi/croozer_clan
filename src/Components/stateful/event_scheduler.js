@@ -78,7 +78,13 @@ class EventSchedule extends Component {
       eventName: "",
       eventDay: "",
       eventTime: "",
-      eventActivity: ""
+      eventActivity: "",
+      eventDescription: "",
+      categories: [],
+      arenas: [],
+      activities: [],
+      first_toggle: true,
+      second_toggle: true
     });
     close();
   };
@@ -474,7 +480,7 @@ class EventSchedule extends Component {
                   <div className="messageCentral_subject">
                     {index.event_activity}
                   </div>
-                  <div className="messageCentral_body">
+                  <div className="messageCentral_body" style={{display: 'flex'}}>
                     {index.event_description}
                   </div>
                   <h1

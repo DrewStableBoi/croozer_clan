@@ -9,7 +9,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 
-
 class MessageCentral extends Component {
   constructor() {
     super();
@@ -82,7 +81,7 @@ class MessageCentral extends Component {
     }
   };
 
-  sendMessageTwo = async (close) => {
+  sendMessageTwo = async close => {
     const messageObject = {
       messageSubject: this.state.responseSubject,
       userMessage: this.state.responseMessage,
@@ -101,11 +100,12 @@ class MessageCentral extends Component {
     }
   };
 
-  clearMessage = () => {
+  clearMessage = (close) => {
     this.setState({
       responseMessage: "",
       responseSubject: ""
     });
+    close();
   };
 
   deleteMessage = async (id, close) => {
@@ -149,21 +149,22 @@ class MessageCentral extends Component {
               padding: "10px"
             }}
           >
-            <Button onClick={this.refreshMessages} style={{color: 'white'}}>
+            <Button onClick={this.refreshMessages} style={{ color: "white" }}>
               Refresh Messages
             </Button>
 
             <Popup
-              trigger={<Button style={{color: 'white'}}>Send A Message</Button>}
+              trigger={
+                <Button style={{ color: "white" }}>Send A Message</Button>
+              }
               position="right center"
               modal
             >
               {close => (
-                <div className="messageContainer">
+                <div className="messageContainer" style={{ height: "500px"}}>
                   <h1
                     style={{
-                      fontSize: "25px",
-                      textDecorationLine: "underline"
+                      fontSize: "35px",
                     }}
                   >
                     Find a Friend, Send them a Message!
@@ -187,6 +188,29 @@ class MessageCentral extends Component {
                       })}
                     </Select>
                   </FormControl>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={() => {
+                      const id = this.props.user.id;
+                      axios
+                        .get("/getUserFriends", { params: { id } })
+                        .then(response => {
+                          this.setState({
+                            userFriends: response.data
+                          });
+                        });
+                    }}
+                    style={{
+                      display: "flex",
+                      alignSelf: "flex-start",
+                      marginTop: "10px",
+                      backgroundColor: "#C7152E",
+                      color: "white"
+                    }}
+                  >
+                    Friend Refresh
+                  </Button>
                   <h2 style={{ color: "grey" }}>Subject</h2>
                   <textarea
                     className="messageSubject"
@@ -221,14 +245,14 @@ class MessageCentral extends Component {
                     <Button
                       size="small"
                       onClick={() => this.sendMessageTwo(close)}
-                      style={{backgroundColor: '#C7152E', color: 'white'}}
+                      style={{ backgroundColor: "#C7152E", color: "white" }}
                     >
                       Send Message
                     </Button>
                     <Button
                       size="small"
                       color="default"
-                      onClick={() => this.clearMessage}
+                      onClick={() => this.clearMessage(close)}
                     >
                       Clear Message
                     </Button>
@@ -268,7 +292,7 @@ class MessageCentral extends Component {
                       <h2 style={{ display: "flex", paddingRight: "5px" }}>
                         {index.sender_name}
                       </h2>
-                      <h3 style={{ color: "white", display: "flex" }}>
+                      <h3 style={{ display: "flex" }}>
                         ( {index.sender_full_name} )
                       </h3>
                     </div>

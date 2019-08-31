@@ -110,7 +110,7 @@ class FriendRequests extends Component {
                   <div className="messageCentral_subject">
                     {index.requester_display} ({index.requester_full_name})
                   </div>
-                  <div className="messageCentral_body">
+                  <div className="messageCentral_body" style={{display: 'flex'}}>
                     Wants to be your friend!
                   </div>
                   <div className="messageCentral_from">

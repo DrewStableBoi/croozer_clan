@@ -264,8 +264,9 @@ class SearchAdd extends Component {
             />
             <div style={{display: 'flex'}}>
               <FormControl disabled={this.state.newLoaderDisable} >
-                <InputLabel >Select Only One Item</InputLabel>
+                <InputLabel>Select Only One Item</InputLabel>
                 <Select
+                  required
                   fullWidth
                   margin="dense"
                   value={this.state.searchTarget}
