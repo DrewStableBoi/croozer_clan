@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6db5c27a.chunk.css",
+    "main.js": "/static/js/main.571dbe6d.chunk.js",
+    "main.js.map": "/static/js/main.571dbe6d.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/css/2.8271af8e.chunk.css": "/static/css/2.8271af8e.chunk.css",
+    "static/js/2.e7f1c231.chunk.js": "/static/js/2.e7f1c231.chunk.js",
+    "static/js/2.e7f1c231.chunk.js.map": "/static/js/2.e7f1c231.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.dcbdb517c1ffdf8f5bdcf426036bd2d7.js": "/precache-manifest.dcbdb517c1ffdf8f5bdcf426036bd2d7.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.8271af8e.chunk.css.map": "/static/css/2.8271af8e.chunk.css.map",
+    "static/css/main.6db5c27a.chunk.css.map": "/static/css/main.6db5c27a.chunk.css.map",
+    "static/media/9BH.wav": "/static/media/9BH.5a13eeb8.wav",
+    "static/media/9CH.wav": "/static/media/9CH.0165f856.wav",
+    "static/media/A1H.wav": "/static/media/A1H.3bb12a0c.wav",
+    "static/media/Croozer logo.svg": "/static/media/Croozer logo.e5fd5706.svg",
+    "static/media/call_of_duty.mp4": "/static/media/call_of_duty.8ae381c7.mp4",
+    "static/media/croozer_rap.mp4": "/static/media/croozer_rap.95462721.mp4",
+    "static/media/donovan_mitchel.mp4": "/static/media/donovan_mitchel.0da1fd6f.mp4",
+    "static/media/index.css": "/static/media/roboto-latin-900italic.ebf6d164.woff2",
+    "static/media/street_fighter.mp4": "/static/media/street_fighter.f089cd0f.mp4"
+  }
+}

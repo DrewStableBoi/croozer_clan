@@ -5,21 +5,27 @@ const cors = require("cors");
 const session = require("express-session");
 const massive = require("massive");
 const controller = require("./controllers/controller");
+const path = require('path');
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: '*' }));
+
 app.use(bodyParser.json());
 
-massive({
-  host: "localhost",
-  port: 5432,
-  database: "drewhemsley",
-  user: "drewhemsley",
-  password: ""
-}).then(db => {
-  console.log("PostgreSQL Database Successfully Connected");
+// massive({
+//   host: "localhost",
+//   port: 5432,
+//   database: "drewhemsley",
+//   user: "drewhemsley",
+//   password: ""
+// }).then(db => {
+//   console.log("PostgreSQL Database Successfully Connected");
+//   app.set("db", db);
+// });
 
+massive(process.env.DATABASE_URL).then(db => {
+  console.log("PostgreSQL Database Successfully Connected");
   app.set("db", db);
-});
+ });
 
 app.use(
   session({
@@ -29,6 +35,8 @@ app.use(
     saveUninitialized: true
   })
 );
+
+app.use(express.static(path.join(__dirname, 'client', 'build')))
  
 app.post("/signup", controller.signUp);
 app.post("/login", controller.login);
