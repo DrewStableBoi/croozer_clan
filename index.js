@@ -8,17 +8,6 @@ const path = require('path');
 require('dotenv').config();
 app.use(bodyParser.json());
 
-// massive({
-//   host: "localhost",
-//   port: 5432,
-//   database: "drewhemsley",
-//   user: "drewhemsley",
-//   password: ""
-// }).then(db => {
-//   console.log("PostgreSQL Database Successfully Connected");
-//   app.set("db", db);
-// });
-
 massive(process.env.DATABASE_URL).then(db => {
   console.log("PostgreSQL Database Successfully Connected");
   app.set("db", db);

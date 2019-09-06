@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 module.exports = {
   signUp: async (req, res) => {
     try {
-      const db = req.app.get("db"); 
+      const db = req.app.get("db");
 
       const hash = await bcrypt.hash(req.body.password, 10);
 
@@ -172,9 +172,7 @@ module.exports = {
   getMessages: (req, res) => {
     const db = req.app.get("db");
     const query = `SELECT u.display_name as sender_name, sender_id, u.first_name || ' ' || u.last_name as sender_full_name, message_subject, message_body, message_id, time_of_message FROM 
-    user_messages um JOIN users u ON u.id = um.sender_id WHERE recipient_id = ${
-      req.query.id
-    }`;
+    user_messages um JOIN users u ON u.id = um.sender_id WHERE recipient_id = ${req.query.id}`;
     db.query(query)
       .then(result => {
         res.status(200).send(result);
@@ -330,15 +328,11 @@ module.exports = {
 
       const hash = await bcrypt.hash(updatedUser.newPass, 10);
 
-      await db.query(`UPDATE users SET password = '${hash}' WHERE users.first_name = '${
-        updatedUser.first_name
-      }' AND users.last_name = '${updatedUser.last_name}'
+      await db.query(`UPDATE users SET password = '${hash}' WHERE users.first_name = '${updatedUser.first_name}' AND users.last_name = '${updatedUser.last_name}'
       AND users.email = '${updatedUser.email}'`);
 
       res.send(
-        `Password for email ${updatedUser.email} has been changed to ${
-          updatedUser.newPass
-        }`
+        `Password for email ${updatedUser.email} has been changed to ${updatedUser.newPass}`
       );
       delete updatedUser.newPass;
     } catch (error) {
@@ -433,8 +427,8 @@ module.exports = {
   deleteFriendRequest: (req, res) => {
     const db = req.app.get("db");
     const { id } = req.params;
-    const query = `DELETE FROM users_friend WHERE request_id = ${id}`
-    console.log(query)
+    const query = `DELETE FROM users_friend WHERE request_id = ${id}`;
+    console.log(query);
     db.query(query)
       .then(result => {
         res.status(200).send(result);
@@ -495,8 +489,7 @@ module.exports = {
   getRecord: (req, res) => {
     const db = req.app.get("db");
     const id = req.query.id;
-    const query = 
-    `
+    const query = `
     WITH finally AS 
     (
     WITH almost AS 
