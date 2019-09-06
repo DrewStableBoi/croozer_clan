@@ -5,9 +5,7 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       const db = req.app.get("db");
-
       const hash = await bcrypt.hash(req.body.password, 10);
-
       const newUser = await db.users.insert({
         first_name: req.body.first_name,
         last_name: req.body.last_name,
