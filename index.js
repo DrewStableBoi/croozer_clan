@@ -71,6 +71,10 @@ app.get("/me", (req, res) => {
   res.send(req.session.user);
 })
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build/index.html'))
+})
+
 app.listen(8080, function() {
   console.log(`Listening on port:${this.address().port}`);
 });
