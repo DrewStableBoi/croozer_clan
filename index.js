@@ -1,14 +1,12 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const session = require("express-session");
 const massive = require("massive");
 const controller = require("./controllers/controller");
 const path = require('path');
 require('dotenv').config();
 
-app.use(cors({ credentials: true, origin: '*' }));
 
 app.use(bodyParser.json());
 
