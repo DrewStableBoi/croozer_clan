@@ -25,7 +25,7 @@ class AuthenticatedRoutes extends Component {
   }
 
   render() {
-    if (!this.state.user) return null;
+    if (!this.state.user) return <div>sup fools</div>;
     return (
       <div>
         <Route

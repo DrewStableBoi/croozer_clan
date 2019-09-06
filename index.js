@@ -6,7 +6,6 @@ const massive = require("massive");
 const controller = require("./controllers/controller");
 const path = require('path');
 require('dotenv').config();
-
 app.use(bodyParser.json());
 
 // massive({
@@ -34,7 +33,7 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, 'client', 'build')))
+app.use(express.static(path.join(__dirname, 'build')));
  
 app.post("/signup", controller.signUp);
 app.post("/login", controller.login);
@@ -62,8 +61,6 @@ app.get("/getEventDays", controller.getEventDays);
 app.post("/approve/:id", controller.approveRequest);
 app.post("/deny/:id", controller.denyRequest);
 app.get("/getRecord", controller.getRecord);
-
-
 app.get("/me", (req, res) => {
   res.send(req.session.user);
 })
