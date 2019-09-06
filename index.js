@@ -72,6 +72,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build/index.html'))
 })
 
-app.listen(8080, function() {
+app.listen(process.env.PORT || 8080, function() {
   console.log(`Listening on port:${this.address().port}`);
 });
