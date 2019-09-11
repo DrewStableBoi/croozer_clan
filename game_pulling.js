@@ -1,67 +1,68 @@
-let axios = require('axios');
-let _ = require('lodash');
-let fs = require('fs');
-let API_KEY = 'e8e22519b15fbe8b5e858e89350b6509';
+let axios = require("axios");
+let _ = require("lodash");
+let fs = require("fs");
+let API_KEY = "e8e22519b15fbe8b5e858e89350b6509";
 let REQUEST_LIMIT = 50;
 let BASE_URL = "https://api-v3.igdb.com";
-let massive = require("massive");
-
-massive({
-  host: "localhost",
-  port: 5432,
-  database: "drewhemsley",
-  user: "drewhemsley",
-  password: ""
-}).then(db => {
-  console.log("PostgreSQL Database Successfully Connected");
-
-  app.set("db", db);
-});
 
 function buildRequestOptions(endpoint, fields, offset) {
-  return  {
+  return {
     url: `${BASE_URL}/${endpoint}`,
-    method: 'POST',
+    method: "POST",
     headers: {
-        'Accept': 'application/json',
-        'user-key': API_KEY
+      Accept: "application/json",
+      "user-key": API_KEY
     },
     data: `fields ${fields}; limit ${REQUEST_LIMIT}; offset ${offset};`
   };
 }
 
-
-function getAllData(endpoint, fields, allData = []) {
-  let options = buildRequestOptions(endpoint, fields, _.size(allData));
+function getAllData(endpoint, fields, offset,  allData = []) {
+  let options = buildRequestOptions(endpoint, fields, offset);
   return axios(options)
-  .then(response => {
+    .then(response => {
       allData = _.concat(allData, response.data);
-      if (_.size(response.data) === REQUEST_LIMIT && _.size(allData) < 200) {
-         // ask for the next page of results
-         return getAllData(endpoint, fields, allData);
+      if (_.size(response.data) === REQUEST_LIMIT && _.size(allData) <= 150) {
+        // ask for the next page of results
+        return getAllData(endpoint, fields, _.size(allData), allData);
       }
       return allData;
-  })
-  .catch(err => {
+    })
+    .catch(err => {
       console.error(err);
-  });
+    });
 }
 
 // request for games endpoint
-let gamesEndpoint = 'games';
-let genresEndpoint = 'genres';
-let gamesFields = 'created_at,first_release_date,follows,game_modes,genres,multiplayer_modes,name,platforms,player_perspectives,popularity,rating,rating_count,release_dates,slug,status,summary,themes,time_to_beat,updated_at,url';
-let genresFields = '*';
+let gamesEndpoint = "games";
+let gamesFields =
+  "created_at,first_release_date,game_modes,genres,multiplayer_modes,name,platforms,release_dates,summary,updated_at,url";
 
-getAllData(gamesEndpoint, gamesFields)
-.then(games => {
-   console.log(games);
-   console.log("total:");
-  console.log(_.size(games));
+//use csv-writer to write the result of the API call to a .csv file
 
-  //output games data into a file
-  fs.writeFile('games.log', JSON.stringify(games), function (err, file) {
-  if (err) throw err;
-  console.log('Saved!');
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+  path: "games.csv",
+  header: [
+    { id: "created_at", title: "created_in_db" },
+    { id: "first_release_date", title: "release_date" },
+    { id: "game_modes", title: "game_modes" },
+    { id: "genres", title: "genres" },
+    { id: "multiplayer_modes", title: "multiplayer_modes" },
+    { id: "name", title: "game_name" },
+    { id: "platforms", title: "platforms" },
+    { id: "release_dates", title: "release_dates" },
+    { id: "summary", title: "game_summary" },
+    { id: "url", title: "game_url" }
+  ]
 });
-});
+
+getAllData(gamesEndpoint, gamesFields, 0)
+  .then(games => {
+    csvWriter
+      .writeRecords(games)
+      .then(() => console.log("The CSV file was written successfully"));
+  })
+  .catch(err => {
+    console.log(err);
+  });

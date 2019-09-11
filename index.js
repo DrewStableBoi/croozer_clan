@@ -6,6 +6,7 @@ const massive = require("massive");
 const controller = require("./controllers/controller");
 const path = require('path');
 require('dotenv').config();
+
 app.use(bodyParser.json());
 
 massive(process.env.DATABASE_URL).then(db => {
