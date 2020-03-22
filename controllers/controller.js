@@ -18,7 +18,7 @@ module.exports = {
       delete newUser.password;
 
       res.send(newUser);
-    } catch {
+    } catch (error) {
       console.log(error);
       res.status(500).send(error);
     }
