@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "massive": "^5.11.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.8.6",
     "react-big-calendar": "^0.22.0",
     "react-calendar": "^2.19.1",
